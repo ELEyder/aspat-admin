@@ -1,13 +1,17 @@
-import type { FC } from "react";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 import { Outlet } from "react-router-dom";
 
-const Layout: FC = () => {
+export default function Layout() {
   return (
-    <main>
-      <h1>Hello from Layout!</h1>
-      <Outlet />
-    </main>
+    <SidebarProvider>
+      <AppSidebar />
+      <main>
+        <div className="sticky top-0 z-10 border-b bg-white p-4">
+          <SidebarTrigger />
+        </div>
+        <Outlet />
+      </main>
+    </SidebarProvider>
   );
-};
-
-export default Layout;
+}
