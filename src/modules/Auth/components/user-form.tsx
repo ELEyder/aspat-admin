@@ -46,7 +46,10 @@ export function UserForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="space-y-6 w-full max-w-xs mx-auto"
+      >
         <h1 className="text-xl font-bold">Ingresa tus credenciales</h1>
 
         <FormField
@@ -81,6 +84,9 @@ export function UserForm({
           {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {loading ? "Cargando..." : "Ingresar"}
         </Button>
+        <div className="w-full">
+          <a>¿Olvidaste las credenciales? Solicita un cambio de contraseña</a>
+        </div>
       </form>
     </Form>
   );
