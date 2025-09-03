@@ -6,8 +6,8 @@ export default function Layout() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main>
-        <div className="sticky top-0 z-10 border-b bg-white p-4">
+      <main className="w-full">
+        <div className="sticky top-0 z-10 border-b bg-white p-4 ">
           <SidebarTrigger />
         </div>
         <Outlet />

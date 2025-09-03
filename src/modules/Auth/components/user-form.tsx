@@ -85,7 +85,7 @@ export function UserForm({
           {loading ? "Cargando..." : "Ingresar"}
         </Button>
         <div className="w-full">
-          <a>¿Olvidaste las credenciales? Solicita un cambio de contraseña</a>
+          ¿Olvidaste las credenciales? <a className="font-bold cursor-pointer" > Solicita un cambio de contraseña</a>
         </div>
       </form>
     </Form>
