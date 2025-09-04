@@ -19,7 +19,7 @@ export const useServiceRequest = (page: number, per_page: number) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await api.get<ApiResponse>("requests/services", {
+        const response = await api.get<ApiResponse>("service-requests", {
           params: { page, per_page },
         });
         setData(response.data.data);

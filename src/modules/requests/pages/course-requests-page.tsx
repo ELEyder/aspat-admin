@@ -3,7 +3,7 @@ import { columns } from "../configs/course-requests.config";
 import { useCoursesRequests } from "../hooks/use-course-requests";
 
 export default function CourseRequestsPage() {
-  const { data } = useCoursesRequests(1, 10);
+  const { data } = useCoursesRequests(1, 20);
 
   return (
     <div className="p-8">
