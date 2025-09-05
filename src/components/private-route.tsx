@@ -1,4 +1,5 @@
 import api from "@/lib/api";
+import Cookies from "js-cookie";
 import { type FC, type ReactNode, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
@@ -17,12 +18,12 @@ export const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
         if (res.data.valid) {
           setIsValid(true);
         } else {
-          localStorage.removeItem("token");
+          Cookies.remove("token");
           setIsValid(false);
         }
       })
       .catch(() => {
-        localStorage.removeItem("token");
+        Cookies.remove("token");
         setIsValid(false);
       })
       .finally(() => setLoading(false));
