@@ -1,13 +1,24 @@
-import axios from "axios";
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL + "/api/admin/",
-  headers: { Accept: "application/json" },
+    withCredentials: true,
 });
 
-const token = localStorage.getItem("token");
-if (token) {
-  api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-}
+api.interceptors.request.use(
+  (config) => {
+    const token = Cookies.get('token');
+    console.log(token);
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export default api;

@@ -19,10 +19,6 @@ export function useLogin() {
 
     try {
       const res = await api.post<ApiResponse>("login", credentials);
-      if (res.data.access_token) {
-        localStorage.setItem("token", res.data.access_token);
-        api.defaults.headers.common["Authorization"] = `Bearer ${res.data.access_token}`;
-      }
       setData(res.data);
       return res.data;
     } catch (err: any) {
@@ -41,7 +37,6 @@ export function useLogin() {
     try {
       const res = await api.post<ApiResponse>("logout");
       setData(res.data);
-      localStorage.removeItem("token");
       delete api.defaults.headers.common["Authorization"];
       return res.data;
     } catch (err: any) {
