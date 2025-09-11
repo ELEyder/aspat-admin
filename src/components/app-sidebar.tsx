@@ -77,8 +77,11 @@ export function AppSidebar() {
         } catch (error) {
           toast.error("Error cerrando sesión. Se forzó el logout.");
         } finally {
-          localStorage.removeItem("token");
-          window.location.href = "/login";
+          setTimeout(() => {
+            window.location.href = import.meta.env.PROD
+              ? "https://platform.aspatperu.org.pe"
+              : "http://localhost:5174";
+          }, 1000);
         }
       },
       icon: LogOut,
@@ -148,19 +151,19 @@ export function AppSidebar() {
                       }
                     >
                       {item.onClick ? (
-                      <button
-                        onClick={item.onClick}
-                        className="flex items-center cursor-pointer"
-                      >
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </button>
-                    ) : (
-                      <Link to={item.url} className="flex items-center">
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </Link>
-                    )}
+                        <button
+                          onClick={item.onClick}
+                          className="flex items-center cursor-pointer"
+                        >
+                          <item.icon />
+                          <span>{item.title}</span>
+                        </button>
+                      ) : (
+                        <Link to={item.url} className="flex items-center">
+                          <item.icon />
+                          <span>{item.title}</span>
+                        </Link>
+                      )}
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );

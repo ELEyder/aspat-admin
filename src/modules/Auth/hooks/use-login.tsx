@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "@/lib/api";
 import type { UserFormValues } from "../components/user-form";
+import Cookies from "js-cookie";
 
 interface ApiResponse {
   message: string;
@@ -37,7 +38,6 @@ export function useLogin() {
     try {
       const res = await api.post<ApiResponse>("logout");
       setData(res.data);
-      delete api.defaults.headers.common["Authorization"];
       return res.data;
     } catch (err: any) {
       const message = err.response?.data?.message || "Error en el logout";
@@ -45,6 +45,7 @@ export function useLogin() {
       throw new Error(message);
     } finally {
       setLoading(false);
+      Cookies.remove("token");
     }
   };
 

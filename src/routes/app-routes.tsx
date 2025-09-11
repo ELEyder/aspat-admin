@@ -6,7 +6,6 @@ import { PrivateRoute } from "@/components/private-route";
 
 // Lazy load de las páginas
 const HomePage = lazy(() => import("../modules/home/pages/home-page"));
-const LoginPage = lazy(() => import("@/modules/auth/pages/login-page"));
 const ServiceRequestsPage = lazy(() => import("@/modules/requests/pages/service-requests-page"));
 const CourseRequestsPage = lazy(() => import("@/modules/requests/pages/course-requests-page"));
 
@@ -23,12 +22,9 @@ const AppRoutes: FC = () => {
           }
         >
           <Route index element={<HomePage />} />
-          <Route path="*" element={<LoginPage />} />
           <Route path="/requests/services" element={<ServiceRequestsPage />} />
           <Route path="/requests/courses" element={<CourseRequestsPage />} />
         </Route>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<LoginPage />} />
       </Routes>
     </Suspense>
   );

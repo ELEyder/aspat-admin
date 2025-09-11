@@ -1,7 +1,6 @@
 import api from "@/lib/api";
 import Cookies from "js-cookie";
 import { type FC, type ReactNode, useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -30,7 +29,12 @@ export const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
   }, []);
 
   if (loading) return <div>Cargando...</div>;
-  if (!isValid) return <Navigate to="/login" replace />;
+  if (!isValid) {
+    window.location.href = import.meta.env.PROD
+      ? "https://platform.aspatperu.org.pe"
+      : "http://localhost:5174";
+    return null;
+  }
 
   return <>{children}</>;
 };
