@@ -18,6 +18,7 @@ export const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
       .then((res: any) => {
         if (res.data.valid) {
           setIsValid(true);
+          
         } else {
           Cookies.remove("token");
           setIsValid(false);
@@ -32,15 +33,15 @@ export const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
 
   const navigate = useNavigate();
 
-useEffect(() => {
-  if (!loading && !isValid) {
-    navigate(
-      import.meta.env.PROD
-        ? "https://platform.aspatperu.org.pe"
-        : "http://localhost:5174"
-    );
-  }
-}, [loading, isValid, navigate]);
+  useEffect(() => {
+    if (!loading && !isValid) {
+      navigate(
+        import.meta.env.PROD
+          ? "https://platform.aspatperu.org.pe"
+          : "http://localhost:5174"
+      );
+    }
+  }, [loading, isValid, navigate]);
 
   if (loading) return <Loading />;
 
