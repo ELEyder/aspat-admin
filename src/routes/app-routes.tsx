@@ -3,15 +3,17 @@ import { Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import Layout from "../layouts/layout";
 import { PrivateRoute } from "@/components/private-route";
+import LoadingPage from "@/pages/loading-page";
 
-// Lazy load de las páginas
 const HomePage = lazy(() => import("../modules/home/pages/home-page"));
 const ServiceRequestsPage = lazy(() => import("@/modules/requests/pages/service-requests-page"));
 const CourseRequestsPage = lazy(() => import("@/modules/requests/pages/course-requests-page"));
+const ConfigCoursesPage = lazy(() => import("@/modules/config/courses/pages/config-courses-page"));
+const ConfigCourseDetailsPage = lazy(() => import("@/modules/config/courses/pages/config-course-details-page"));
 
 const AppRoutes: FC = () => {
   return (
-    <Suspense fallback={<div>Cargando...</div>}>
+    <Suspense fallback={<LoadingPage />}>
       <Routes>
         <Route
           path="/"
@@ -24,6 +26,8 @@ const AppRoutes: FC = () => {
           <Route index element={<HomePage />} />
           <Route path="/requests/services" element={<ServiceRequestsPage />} />
           <Route path="/requests/courses" element={<CourseRequestsPage />} />
+          <Route path="/config/courses" element={<ConfigCoursesPage />} />
+          <Route path="/config/courses/:id" element={<ConfigCourseDetailsPage />} />
         </Route>
       </Routes>
     </Suspense>

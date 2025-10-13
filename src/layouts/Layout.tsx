@@ -7,10 +7,12 @@ export default function Layout() {
     <SidebarProvider>
       <AppSidebar />
       <main className="w-full">
-        <div className="sticky top-0 z-10 border-b bg-white p-4 ">
+        <div className="md:hidden fixed bottom-5 right-5 w-10 h-10 rounded-full shadow-lg shadow-black/50 flex items-center justify-center z-2 bg-white">
           <SidebarTrigger />
         </div>
-        <Outlet />
+        <main className="w-full min-h-full space-y-12 relative flex flex-col">
+          <Outlet />
+        </main>
       </main>
     </SidebarProvider>
   );

@@ -10,7 +10,7 @@ interface ApiResponse {
   data: ServiceRequest[];
 }
 
-export const useServiceRequest = (page: number, per_page: number) => {
+export const useCourseRequests = (page: number, per_page: number) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<ServiceRequest[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -19,7 +19,7 @@ export const useServiceRequest = (page: number, per_page: number) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await api.get<ApiResponse>("service-requests", {
+        const response = await api.get<ApiResponse>("requests/courses", {
           params: { page, per_page },
         });
         setData(response.data.data);

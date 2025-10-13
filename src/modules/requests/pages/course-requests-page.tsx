@@ -1,9 +1,9 @@
 import { DataTable } from "../../../components/data-table";
 import { columns } from "../configs/course-requests.config";
-import { useCoursesRequests } from "../hooks/use-course-requests";
+import { useCourseRequests } from "../hooks/useCourseRequest";
 
 export default function CourseRequestsPage() {
-  const { data } = useCoursesRequests(1, 20);
+  const { data } = useCourseRequests(1, 20);
 
   return (
     <div className="p-8">

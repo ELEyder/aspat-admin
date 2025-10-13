@@ -1,5 +1,5 @@
 import { columns } from "../configs/service-requests.config";
-import { useServiceRequest } from "../hooks/use-service-requests";
+import { useServiceRequest } from "../hooks/useServiceRequest";
 import { DataTable } from "../../../components/data-table";
 
 export default function ServiceRequestsPage() {
