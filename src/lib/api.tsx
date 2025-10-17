@@ -6,6 +6,9 @@ const api = axios.create({
   params: {
     locale: "es",
   },
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 
