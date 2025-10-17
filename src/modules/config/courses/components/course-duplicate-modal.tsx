@@ -1,6 +1,5 @@
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -11,6 +10,7 @@ import {
 import type { FC } from "react";
 import type { Course } from "../types/Course";
 import { useDuplicateCourse } from "../hooks/useDuplicateCourse";
+import { Button } from "@/components/ui/button";
 
 interface CourseDuplicateModalProps {
   course: Course;
@@ -25,7 +25,8 @@ const CourseDuplicateModal: FC<CourseDuplicateModalProps> = ({
 
   const useMutation = useDuplicateCourse();
   const handleClick = async () => {
-    useMutation.mutate(course.id.toString())
+    await useMutation.mutateAsync(course.id.toString())
+    setOpen(false);
   };
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -41,9 +42,9 @@ const CourseDuplicateModal: FC<CourseDuplicateModalProps> = ({
           <AlertDialogCancel className="cursor-pointer">
             Cancelar
           </AlertDialogCancel>
-          <AlertDialogAction className="cursor-pointer" onClick={handleClick}>
+          <Button className="cursor-pointer" onClick={handleClick} disabled={useMutation.isPending}>
             Duplicar
-          </AlertDialogAction>
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

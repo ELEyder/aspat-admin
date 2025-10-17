@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { Loader2 } from "lucide-react";
 
 import {
@@ -35,28 +35,41 @@ export type CourseFormValues = z.infer<typeof schema>;
 
 export const CourseForm = forwardRef(function CourseForm(
   {
-    onSubmit,
     course,
+    onSubmit,
+    onDirtyChange
   }: {
     onSubmit: (data: CourseFormValues) => Promise<void> | void;
     course: Course;
+    onDirtyChange : (dirty: boolean) => void;
   },
   ref
 ) {
   const [loading, setLoading] = useState(false);
-
+  const [isDirty, setIsDirty] = useState(false);
   const form = useForm<CourseFormValues>({
     resolver: zodResolver(schema),
+    mode: "onChange",
     defaultValues: {
       slug: course.slug,
       translations: course.translations,
     },
   });
 
+  useEffect(() => {
+    setIsDirty(form.formState.isDirty);
+  }, [form.formState.isDirty]);
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty]);
+  
   const handleSubmit = async (data: CourseFormValues) => {
+    if (!isDirty) return;
     try {
       setLoading(true);
       await onSubmit(data);
+      form.reset(data);
     } finally {
       setLoading(false);
     }
@@ -72,7 +85,7 @@ export const CourseForm = forwardRef(function CourseForm(
         onSubmit={form.handleSubmit(handleSubmit)}
         className="space-y-6 w-full mx-auto"
       >
-         <FormField
+        <FormField
           control={form.control}
           name="slug"
           render={({ field }) => (
@@ -133,9 +146,12 @@ export const CourseForm = forwardRef(function CourseForm(
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={loading}>
-          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {loading ? "Cargando..." : "Guardar Cambios"}
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={loading || !isDirty}
+        >
+          {loading ? <Loader2 className="animate-spin" /> : "Guardar Cambios"}
         </Button>
       </form>
     </Form>

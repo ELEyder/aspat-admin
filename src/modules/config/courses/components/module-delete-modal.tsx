@@ -8,25 +8,21 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import type { FC } from "react";
-import type { Course } from "../types/Course";
 import { Button } from "@/components/ui/button";
-import { useDeleteCourse } from "../hooks/useDeleteCourse";
+import type { CourseModule } from "../types/Course";
 
-interface CourseDeleteModalProps {
-  course: Course;
+interface ModuleDeleteModalProps {
+  module: CourseModule;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onDelete : (id: number) => void;
 }
-const CourseDeleteModal: FC<CourseDeleteModalProps> = ({
-  course,
+const ModuleDeleteModal: FC<ModuleDeleteModalProps> = ({
+  module,
   open,
   setOpen,
+  onDelete
 }) => {
-
-  const deleteMutation = useDeleteCourse(() => setOpen(false));
-  const handleClick = () => {
-    deleteMutation.mutate(course.id.toString());
-  };
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -34,10 +30,10 @@ const CourseDeleteModal: FC<CourseDeleteModalProps> = ({
         <AlertDialogHeader>
           <AlertDialogTitle>¿Estas seguro?</AlertDialogTitle>
           <AlertDialogDescription>
-            Se eliminará el curso{" "}
-            <strong>{course.translations[0].title}</strong> de la base de datos.
+            Se eliminará el módulo{" "}
+            <strong>{module.translations[0].title}</strong> de la base de datos.
             Esta acción es irreversible, pruebe <strong>desactivar</strong> el
-            curso en su lugar.
+            módulo en su lugar.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -48,10 +44,9 @@ const CourseDeleteModal: FC<CourseDeleteModalProps> = ({
           <Button
             variant={"destructive"}
             className="cursor-pointer"
-            onClick={handleClick}
-            disabled={deleteMutation.isPending}
+            onClick={() => onDelete(module.id)}
           >
-            Eliminar
+            { "Eliminar"}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -59,4 +54,4 @@ const CourseDeleteModal: FC<CourseDeleteModalProps> = ({
   );
 };
 
-export default CourseDeleteModal;
+export default ModuleDeleteModal;

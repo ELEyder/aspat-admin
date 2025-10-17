@@ -7,6 +7,7 @@ import type { UseMutationResult } from "@tanstack/react-query";
 
 interface CourseCardProps {
   course: Course;
+  onDirtyChange : (dirty: boolean) => void;
   formRef: RefObject<{
     submit: () => void;
   } | null>;
@@ -21,10 +22,10 @@ interface CourseCardProps {
   >;
 }
 
-const CourseCard: FC<CourseCardProps> = ({ course, formRef, updateCourse }) => {
+const CourseCard: FC<CourseCardProps> = ({ course, formRef, updateCourse, onDirtyChange }) => {
   
   const handleSubmit = async (formData: CourseFormValues) => {
-    updateCourse.mutate({ id: course.id.toString() ?? "", data: formData });
+    await updateCourse.mutateAsync({ id: course.id.toString() ?? "", data: formData });
   };
 
   return (
@@ -35,7 +36,7 @@ const CourseCard: FC<CourseCardProps> = ({ course, formRef, updateCourse }) => {
         </CardTitle>
       </CardHeader>
       <CardContent className="px-6 bg-white">
-        <CourseForm ref={formRef} course={course} onSubmit={handleSubmit} />
+        <CourseForm ref={formRef} course={course} onSubmit={handleSubmit} onDirtyChange={onDirtyChange} />
       </CardContent>
     </Card>
   );

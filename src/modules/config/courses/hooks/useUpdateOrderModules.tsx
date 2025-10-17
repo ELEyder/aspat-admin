@@ -22,7 +22,7 @@ export const useUpdateOrderModules = () => {
       return response.data;
     },
     onSuccess: () => {
-      toast.success("Order de modules del curso actualizado correctamente");
+      toast.success("Orden de módulos del curso actualizado correctamente");
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {

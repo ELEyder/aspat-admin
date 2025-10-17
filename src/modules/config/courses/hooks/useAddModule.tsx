@@ -4,6 +4,11 @@ import { toast } from "sonner";
 import axios from "axios";
 import type { CourseModule } from "../types/Course";
 
+interface ApiResponse {
+  message : string,
+  module : CourseModule
+}
+
 export const useAddModule = (onSuccessExtra?: () => void) => {
   const mutation = useMutation({
     mutationFn: async ({
@@ -13,7 +18,7 @@ export const useAddModule = (onSuccessExtra?: () => void) => {
       id: number;
       data: CourseModule;
     }) => {
-      const response = await api.post(`courses/${id}/modules`, data);
+      const response = await api.post<ApiResponse>(`courses/${id}/modules`, data);
       return response.data;
     },
     onSuccess: () => {

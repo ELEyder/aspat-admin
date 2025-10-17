@@ -3,6 +3,8 @@ import type { Course } from "../../types/Course";
 import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@/components/ui/button";
 import { ChevronsUpDownIcon, Edit, Trash } from "lucide-react";
+import ModuleDeleteModal from "../module-delete-modal";
+import { useState } from "react";
 
 interface SortableModuleProps {
   module: Course["modules"][0];
@@ -15,6 +17,8 @@ export function SortableModule({
   index,
   onDelete,
 }: SortableModuleProps) {
+
+  const [open, setOpen] = useState(false);
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: module.id });
   const style = {
@@ -46,10 +50,11 @@ export function SortableModule({
         <Button>
           <Edit />
         </Button>
-        <Button variant="destructive" onClick={() => onDelete(module.id)}>
+        <Button variant="destructive" onClick={() => setOpen(true)}>
           <Trash />
         </Button>
       </div>
+      <ModuleDeleteModal open={open} setOpen={setOpen} onDelete={onDelete} module={module}/>
     </li>
   );
 }

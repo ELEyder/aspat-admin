@@ -15,7 +15,14 @@ const CourseDetailsConfigPage: FC = () => {
   const { id } = useParams();
   const { data, loading } = useCourseDetails(id);
   const [course, setCourse] = useState<Course | null>(data ?? null);
-  const formRef = useRef<{ submit: () => void }>(null);
+  const [formDirty, setFormDirty] = useState(false);
+const [modulesDirty, setModulesDirty] = useState(false);
+  const formRef = useRef<{ submit: () => Promise<void> }>(
+    null
+  );
+  const modulesRef = useRef<{
+    submit: () => Promise<void>
+  }>(null);
   const updateCourse = useUpdateCourse();
   const updateOrderCourse = useUpdateOrderModules();
 
@@ -24,6 +31,11 @@ const CourseDetailsConfigPage: FC = () => {
       setCourse(data);
     }
   }, [data]);
+
+  const handleSubmit = async () => {
+    await modulesRef.current?.submit();
+    await formRef.current?.submit();
+  };
 
   if (loading) return <Loading />;
   if (!data || !course)
@@ -50,8 +62,8 @@ const CourseDetailsConfigPage: FC = () => {
           </div>
 
           <Button
-            onClick={() => formRef.current?.submit()}
-            disabled={updateCourse.isPending}
+            onClick={handleSubmit}
+            disabled={!(formDirty || modulesDirty) || updateCourse.isPending || updateOrderCourse.isPending}
             className="w-35"
           >
             {updateCourse.isPending ? (
@@ -67,9 +79,16 @@ const CourseDetailsConfigPage: FC = () => {
             course={course}
             formRef={formRef}
             updateCourse={updateCourse}
+            onDirtyChange={setFormDirty}
           />
 
-          <CourseModulesCard course={course} setCourse={setCourse} updateOrderCourse={updateOrderCourse} />
+          <CourseModulesCard
+            course={course}
+            setCourse={setCourse}
+            updateOrderCourse={updateOrderCourse}
+            ref={modulesRef}
+            onDirtyChange={setModulesDirty}
+          />
         </div>
       </div>
     </div>

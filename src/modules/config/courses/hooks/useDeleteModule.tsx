@@ -2,27 +2,22 @@ import { useMutation } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { toast } from "sonner";
 import axios from "axios";
-import type { CourseModule } from "../types/Course";
 
-export const useAddModule = (onSuccessExtra?: () => void) => {
+export const useDeleteModule = (onSuccessExtra?: () => void) => {
   const mutation = useMutation({
-    mutationFn: async ({
-      id,
-      data,
-    }: {
-      id: number;
-      data: CourseModule;
-    }) => {
-      const response = await api.post(`courses/${id}/modules/moduleId`, data);
+    mutationFn: async (id: number) => {
+      const response = await api.delete(`modules/${id}`);
       return response.data;
     },
     onSuccess: () => {
       onSuccessExtra?.();
-      toast.success("Módulo agregado correctamente");
+      toast.success("Módulo eliminado correctamente");
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.message ?? "Error al crear el curso");
+        toast.error(
+          error.response?.data?.message ?? "Error al eliminar el módulo"
+        );
       } else {
         toast.error("Error inesperado");
       }

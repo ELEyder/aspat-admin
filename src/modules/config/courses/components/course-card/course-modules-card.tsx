@@ -14,17 +14,25 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { Loader2, Plus } from "lucide-react";
-import { type Dispatch, type FC } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+  type Dispatch,
+} from "react";
 import type { Course } from "../../types/Course";
 import { SortableModule } from "./sortable-module";
-import { toast } from "sonner";
 import type { UseMutationResult } from "@tanstack/react-query";
 import type { UpdateOrderModulesValues } from "../../hooks/useUpdateOrderModules";
 import { useAddModule } from "../../hooks/useAddModule";
+import { useDeleteModule } from "../../hooks/useDeleteModule";
 
 interface CourseModulesCardProps {
   course: Course;
   setCourse: Dispatch<React.SetStateAction<Course | null>>;
+  onDirtyChange: (dirty: boolean) => void;
   updateOrderCourse: UseMutationResult<
     any,
     Error,
@@ -36,13 +44,26 @@ interface CourseModulesCardProps {
   >;
 }
 
-const CourseModulesCard: FC<CourseModulesCardProps> = ({
-  course,
-  setCourse,
-  updateOrderCourse,
-}) => {
+const CourseModulesCard = forwardRef(function CourseModulesCard(
+  {
+    course,
+    setCourse,
+    onDirtyChange,
+    updateOrderCourse,
+  }: CourseModulesCardProps,
+  ref
+) {
   const sensors = useSensors(useSensor(PointerSensor));
   const addModule = useAddModule();
+  const deleteModule = useDeleteModule();
+  const [hasChanges, setHasChanges] = useState(false);
+
+  const initialOrderRef = useRef(course.modules.map((m) => m.id));
+
+  useEffect(() => {
+    onDirtyChange?.(hasChanges);
+  }, [hasChanges]);
+
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -53,12 +74,20 @@ const CourseModulesCard: FC<CourseModulesCardProps> = ({
 
     setCourse((prev) => {
       if (!prev) return prev;
+      const newModules = arrayMove(prev.modules, oldIndex, newIndex);
+
+      setHasChanges(
+        JSON.stringify(newModules.map((m) => m.id)) !==
+          JSON.stringify(initialOrderRef.current)
+      );
+
       return {
         ...prev,
-        modules: arrayMove(prev.modules, oldIndex, newIndex),
+        modules: newModules,
       };
     });
   };
+
   const handleAddModule = async () => {
     const newModule = {
       contents: [],
@@ -66,7 +95,7 @@ const CourseModulesCard: FC<CourseModulesCardProps> = ({
       created_at: "",
       updated_at: "",
       order: course.modules.length + 1,
-      id: course.modules.length + 1,
+      id: Date.now(),
       translations: [
         {
           title: "(Sin título)",
@@ -81,18 +110,20 @@ const CourseModulesCard: FC<CourseModulesCardProps> = ({
       ],
     };
 
-    await addModule.mutateAsync({ id: course.id, data: newModule });
+    const res = await addModule.mutateAsync({ id: course.id, data: newModule });
 
     setCourse((prev) => {
       if (!prev) return prev;
       return {
         ...prev,
-        modules: [...prev.modules, newModule],
+        modules: [...prev.modules, res.module],
       };
     });
   };
 
-  const deleteModule = (id: number) => {
+  const handleDeleteModule = async (id: number) => {
+    await deleteModule.mutateAsync(id);
+
     setCourse((prev) => {
       if (!prev) return prev;
       return {
@@ -100,11 +131,11 @@ const CourseModulesCard: FC<CourseModulesCardProps> = ({
         modules: prev.modules.filter((m) => m.id !== id),
       };
     });
-    toast("Se borró" + course.modules);
   };
 
-  const handleSubmit = () => {
-    updateOrderCourse.mutate({
+  const handleSubmit = async () => {
+    if (!hasChanges) return;
+    await updateOrderCourse.mutateAsync({
       id: course.id.toString(),
       data: {
         modules: course.modules.map((module, index) => {
@@ -115,7 +146,15 @@ const CourseModulesCard: FC<CourseModulesCardProps> = ({
         }),
       },
     });
+
+    initialOrderRef.current = course.modules.map((m) => m.id);
+    setHasChanges(false);
   };
+
+  useImperativeHandle(ref, () => ({
+    submit: handleSubmit,
+  }));
+
   return (
     <Card className="shadow-lg border border-gray-200 rounded-xl">
       <CardHeader className="border-b bg-white rounded-t-xl">
@@ -139,7 +178,7 @@ const CourseModulesCard: FC<CourseModulesCardProps> = ({
                   key={module.id}
                   module={module}
                   index={index}
-                  onDelete={() => deleteModule(module.id)}
+                  onDelete={() => handleDeleteModule(module.id)}
                 />
               ))}
               <li className="w-full">
@@ -164,10 +203,10 @@ const CourseModulesCard: FC<CourseModulesCardProps> = ({
         <Button
           onClick={handleSubmit}
           className="w-full"
-          disabled={updateOrderCourse.isPending}
+          disabled={updateOrderCourse.isPending || !hasChanges}
         >
           {updateOrderCourse.isPending ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            <Loader2 className="animate-spin" />
           ) : (
             "Guardar Cambios"
           )}
@@ -175,6 +214,6 @@ const CourseModulesCard: FC<CourseModulesCardProps> = ({
       </CardContent>
     </Card>
   );
-};
+});
 
 export default CourseModulesCard;
