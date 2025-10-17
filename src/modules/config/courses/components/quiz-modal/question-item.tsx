@@ -1,5 +1,5 @@
-import type { QuizOption, QuizQuestion } from "@/interfaces/Quiz";
 import type { FC } from "react";
+import type { QuizOption, QuizQuestion } from "../../types/Quiz";
 
 interface QuestionItemProps {
   question: QuizQuestion;

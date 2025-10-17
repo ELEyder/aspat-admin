@@ -36,12 +36,12 @@ import {
 } from "./ui/dropdown-menu";
 
 import { Link, useLocation } from "react-router-dom";
-import { useLogin } from "@/modules/auth/hooks/use-login";
-import { toast } from "sonner";
+import CloseSesionModal from "./close-sesion-modal";
+import { useState } from "react";
 
 export function AppSidebar() {
+  const [open, setOpen] = useState(false);
   const location = useLocation();
-  const { logout } = useLogin();
 
   const items = [
     {
@@ -69,22 +69,7 @@ export function AppSidebar() {
     },
     {
       title: "Cerrar Sesión",
-      onClick: async () => {
-        try {
-          const response = await logout();
-          if (response.message) {
-            toast.success(response.message);
-          }
-        } catch (error) {
-          toast.error("Error cerrando sesión. Se forzó el logout.");
-        } finally {
-          setTimeout(() => {
-            window.location.href = import.meta.env.PROD
-              ? "https://platform.aspatperu.org.pe"
-              : "http://localhost:5174";
-          }, 1000);
-        }
-      },
+      onClick: () => setOpen(true),
       icon: LogOut,
     },
   ];
@@ -205,6 +190,7 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
+      <CloseSesionModal open={open} setOpen={setOpen}/>
     </Sidebar>
   );
 }

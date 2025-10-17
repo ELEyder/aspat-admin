@@ -9,7 +9,7 @@ function App() {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <Toaster />
+        <Toaster position="top-right"/>
         <AppRoutes />
       </QueryClientProvider>
     </BrowserRouter>

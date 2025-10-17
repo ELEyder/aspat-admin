@@ -3,6 +3,9 @@ import Cookies from "js-cookie";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL + "/api/admin/",
+  params: {
+    locale: "es",
+  },
 });
 
 

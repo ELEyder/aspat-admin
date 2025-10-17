@@ -8,8 +8,8 @@ import LoadingPage from "@/pages/loading-page";
 const HomePage = lazy(() => import("../modules/home/pages/home-page"));
 const ServiceRequestsPage = lazy(() => import("@/modules/requests/pages/service-requests-page"));
 const CourseRequestsPage = lazy(() => import("@/modules/requests/pages/course-requests-page"));
-const ConfigCoursesPage = lazy(() => import("@/modules/config/courses/pages/config-courses-page"));
-const ConfigCourseDetailsPage = lazy(() => import("@/modules/config/courses/pages/config-course-details-page"));
+const ConfigCoursesPage = lazy(() => import("@/modules/config/courses/pages/courses-config-page"));
+const ConfigCourseDetailsPage = lazy(() => import("@/modules/config/courses/pages/course-details-config-page"));
 
 const AppRoutes: FC = () => {
   return (

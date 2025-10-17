@@ -4,7 +4,6 @@ import {
   type FC,
   type SetStateAction,
 } from "react";
-import ScoresModal from "../scores-modal/scores-modal";
 import QuizContent from "./quiz-content";
 import type { Quiz } from "../../types/Quiz";
 import DefaultModal from "@/components/default-modal";
@@ -19,7 +18,6 @@ const QuizModal: FC<QuizModalProps> = ({ open, setOpen, quiz }) => {
   if (!quiz) return null;
 
   const [answers, setAnswers] = useState<Record<number, number | number[]>>({});
-  const [scoreModalOpen, setScoreModalOpen] = useState(false);
 
   return (
     <>
@@ -43,11 +41,6 @@ const QuizModal: FC<QuizModalProps> = ({ open, setOpen, quiz }) => {
           />
         </div>
       </DefaultModal>
-      <ScoresModal
-        open={scoreModalOpen}
-        setOpen={setScoreModalOpen}
-        quiz={quiz}
-      />
     </>
   );
 };

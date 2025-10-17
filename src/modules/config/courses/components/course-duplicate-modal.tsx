@@ -8,32 +8,24 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useLogin } from "@/modules/auth/hooks/use-login";
 import type { FC } from "react";
-import { toast } from "sonner";
+import type { Course } from "../types/Course";
+import { useDuplicateCourse } from "../hooks/useDuplicateCourse";
 
-interface CloseSesionModalProps {
+interface CourseDuplicateModalProps {
+  course: Course;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const CloseSesionModal: FC<CloseSesionModalProps> = ({ open, setOpen }) => {
-  const { logout } = useLogin();
+const CourseDuplicateModal: FC<CourseDuplicateModalProps> = ({
+  course,
+  open,
+  setOpen,
+}) => {
 
+  const useMutation = useDuplicateCourse();
   const handleClick = async () => {
-    try {
-      const response = await logout();
-      if (response.message) {
-        toast.success(response.message);
-      }
-    } catch (error) {
-      toast.error("Error cerrando sesión. Se forzó el logout.");
-    } finally {
-      setTimeout(() => {
-        window.location.href = import.meta.env.PROD
-          ? "https://platform.aspatperu.org.pe"
-          : "http://localhost:5174";
-      }, 1000);
-    }
+    useMutation.mutate(course.id.toString())
   };
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -41,7 +33,8 @@ const CloseSesionModal: FC<CloseSesionModalProps> = ({ open, setOpen }) => {
         <AlertDialogHeader>
           <AlertDialogTitle>¿Estas seguro?</AlertDialogTitle>
           <AlertDialogDescription>
-            Se cerrará sesión en tu cuenta actual.
+            Se duplicará el curso{" "}
+            <strong>{course.translations[0].title}</strong>.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -49,7 +42,7 @@ const CloseSesionModal: FC<CloseSesionModalProps> = ({ open, setOpen }) => {
             Cancelar
           </AlertDialogCancel>
           <AlertDialogAction className="cursor-pointer" onClick={handleClick}>
-            Continuar
+            Duplicar
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -57,4 +50,4 @@ const CloseSesionModal: FC<CloseSesionModalProps> = ({ open, setOpen }) => {
   );
 };
 
-export default CloseSesionModal;
+export default CourseDuplicateModal;
