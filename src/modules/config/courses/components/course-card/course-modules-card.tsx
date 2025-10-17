@@ -18,15 +18,22 @@ import { type Dispatch, type FC } from "react";
 import type { Course } from "../../types/Course";
 import { SortableModule } from "./sortable-module";
 import { toast } from "sonner";
+import type { UseMutationResult } from "@tanstack/react-query";
+import type { UpdateOrderModulesValues } from "../../hooks/useUpdateOrderModules";
 
 interface CourseModulesCardProps {
   course: Course;
   setCourse: Dispatch<React.SetStateAction<Course | null>>;
+  updateOrderCourse : UseMutationResult<any, Error, {
+    id: string;
+    data: UpdateOrderModulesValues;
+}, unknown>
 }
 
 const CourseModulesCard: FC<CourseModulesCardProps> = ({
   course,
   setCourse,
+  updateOrderCourse
 }) => {
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -38,7 +45,7 @@ const CourseModulesCard: FC<CourseModulesCardProps> = ({
     const newIndex = course.modules.findIndex((m) => m.id === over.id);
 
     setCourse((prev) => {
-      if (!prev) return prev; // por si prev es null
+      if (!prev) return prev;
       return {
         ...prev,
         modules: arrayMove(prev.modules, oldIndex, newIndex),
@@ -88,6 +95,15 @@ const CourseModulesCard: FC<CourseModulesCardProps> = ({
     toast("Se borró" + course.modules);
   };
 
+  const handleSubmit = () => {
+    updateOrderCourse.mutate({id : course.id.toString(), data : {modules : course.modules.map((module, index) => {
+      return {
+        id : module.id,
+        order : index + 1
+      }
+    }
+    )}});
+  }
   return (
     <Card className="shadow-lg border border-gray-200 rounded-xl">
       <CardHeader className="border-b bg-white rounded-t-xl">
@@ -126,7 +142,7 @@ const CourseModulesCard: FC<CourseModulesCardProps> = ({
             </ul>
           </SortableContext>
         </DndContext>
-        <Button onClick={() => {}} className="w-full">
+        <Button onClick={handleSubmit} className="w-full">
           {false && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {false ? "Cargando..." : "Guardar Cambios"}
         </Button>

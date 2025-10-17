@@ -9,6 +9,7 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import CourseCard from "../components/course-card/course-card";
 import CourseModulesCard from "../components/course-card/course-modules-card";
 import { useUpdateCourse } from "../hooks/useUpdateCourse";
+import { useUpdateOrderModules } from "../hooks/useUpdateOrderModules";
 
 const CourseDetailsConfigPage: FC = () => {
   const { id } = useParams();
@@ -16,6 +17,7 @@ const CourseDetailsConfigPage: FC = () => {
   const [course, setCourse] = useState<Course | null>(data ?? null);
   const formRef = useRef<{ submit: () => void }>(null);
   const updateCourse = useUpdateCourse();
+  const updateOrderCourse = useUpdateOrderModules();
 
   useEffect(() => {
     if (data) {
@@ -67,7 +69,7 @@ const CourseDetailsConfigPage: FC = () => {
             updateCourse={updateCourse}
           />
 
-          <CourseModulesCard course={course} setCourse={setCourse} />
+          <CourseModulesCard course={course} setCourse={setCourse} updateOrderCourse={updateOrderCourse} />
         </div>
       </div>
     </div>
