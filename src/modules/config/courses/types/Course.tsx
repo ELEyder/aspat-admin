@@ -22,6 +22,7 @@ export interface Course {
   has_course : boolean;
   has_request : boolean;
   progress : number;
+  is_active : boolean;
 }
 
 export interface CourseTranslation {

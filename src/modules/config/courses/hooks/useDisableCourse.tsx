@@ -2,22 +2,20 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { toast } from "sonner";
 
-export const useDeleteCourse = (onSuccessExtra?: () => void) => {
+export const useDisableCourse = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (id: string) => {
-      const response = await api.delete(`courses/${id}`);
+      const response = await api.patch(`courses/${id}/disable`);
       return response.data;
     },
     onSuccess: (data) => {
-      toast.success(data.message ?? "Curso eliminado correctamente");
+      toast.success(data.message ?? "Curso deshabilitado correctamente");
       queryClient.invalidateQueries({ queryKey: ["courses"] });
-
-      onSuccessExtra?.();
     },
     onError: (error: any) => {
-      toast.error("Error al eliminar el curso");
+      toast.error("Error al deshabilitar el curso");
       console.error(error);
     },
   });

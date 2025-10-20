@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { useCourses } from "../hooks/useCourses";
 import Loading from "@/components/loading";
 import { DataTable } from "@/components/data-table";
-import { columns } from "../configs/config-courses.config";
+import { columns } from "../configs/courses.config";
 
 const CoursesConfigPage: FC = () => {
   const { data, loading } = useCourses();

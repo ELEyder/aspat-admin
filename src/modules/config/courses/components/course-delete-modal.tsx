@@ -11,6 +11,7 @@ import type { FC } from "react";
 import type { Course } from "../types/Course";
 import { Button } from "@/components/ui/button";
 import { useDeleteCourse } from "../hooks/useDeleteCourse";
+import { useDisableCourse } from "../hooks/useDisableCourse";
 
 interface CourseDeleteModalProps {
   course: Course;
@@ -22,10 +23,17 @@ const CourseDeleteModal: FC<CourseDeleteModalProps> = ({
   open,
   setOpen,
 }) => {
+  const deleteMutation = useDeleteCourse();
+  const disableMutation = useDisableCourse();
 
-  const deleteMutation = useDeleteCourse(() => setOpen(false));
-  const handleClick = () => {
-    deleteMutation.mutate(course.id.toString());
+  const handleClick = async () => {
+    await deleteMutation.mutateAsync(course.id.toString());
+    setOpen(false)
+  };
+
+  const handleDisableClick = async () => {
+    await disableMutation.mutateAsync(course.id.toString());
+    setOpen(false)
   };
 
   return (
@@ -36,7 +44,7 @@ const CourseDeleteModal: FC<CourseDeleteModalProps> = ({
           <AlertDialogDescription>
             Se eliminará el curso{" "}
             <strong>{course.translations[0].title}</strong> de la base de datos.
-            Esta acción es irreversible, pruebe <strong>desactivar</strong> el
+            Esta acción es irreversible, pruebe <strong>deshabilitar</strong> el
             curso en su lugar.
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -44,10 +52,14 @@ const CourseDeleteModal: FC<CourseDeleteModalProps> = ({
           <AlertDialogCancel className="cursor-pointer">
             Cancelar
           </AlertDialogCancel>
-          <Button>Desactivar</Button>
+          <Button
+            onClick={handleDisableClick}
+            disabled={disableMutation.isPending}
+          >
+            Deshabilitar
+          </Button>
           <Button
             variant={"destructive"}
-            className="cursor-pointer"
             onClick={handleClick}
             disabled={deleteMutation.isPending}
           >

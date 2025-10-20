@@ -1,11 +1,12 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { Pencil, Copy, Trash2 } from "lucide-react";
+import { Pencil, Copy, Trash2, Check, Cross, X } from "lucide-react";
 import type { Course } from "../types/Course";
 import { useNavigate } from "react-router-dom";
 import CourseDeleteModal from "../components/course-delete-modal";
 import { useState } from "react";
 import CourseDuplicateModal from "../components/course-duplicate-modal";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const columns: ColumnDef<Course>[] = [
   {
@@ -27,6 +28,14 @@ export const columns: ColumnDef<Course>[] = [
     id: "title",
     accessorKey: "translations.0.title",
     header: "Curso",
+  },
+  {
+    id: "is_active",
+    accessorKey: "is_active",
+    header: "Activado",
+    cell: ({ row }) => {
+      row.original.is_active ? <Check /> : <X />;
+    },
   },
   {
     header: "Opciones",
