@@ -1,13 +1,15 @@
 import type { FC } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { BarChart3, Users, BookOpen, Settings } from "lucide-react";
+import { useCommits } from "../hooks/useCommits";
 
 interface HomePageProps {}
 
 const HomePage: FC<HomePageProps> = ({}) => {
+  const { data } = useCommits();
+
   return (
     <div className="p-6 space-y-6">
-
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card className="rounded-2xl shadow-sm">
           <CardContent className="p-4 flex flex-col items-center">
@@ -47,9 +49,9 @@ const HomePage: FC<HomePageProps> = ({}) => {
         <CardContent className="p-4">
           <h2 className="text-lg font-semibold mb-4">Actividad Reciente</h2>
           <ul className="space-y-3 text-gray-700">
-            <li>- Nuevo usuario registrado</li>
-            <li>- Curso "React Avanzado" publicado</li>
-            <li>- Configuración del sistema actualizada</li>
+              {data?.map((commit) => (
+              <li>• {commit.message}</li>
+              ))}
           </ul>
         </CardContent>
       </Card>
