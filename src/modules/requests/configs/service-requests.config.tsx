@@ -1,7 +1,8 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+import { Phone, Trash2 } from "lucide-react";
 import type { ServiceRequest } from "../types/ServiceRequest";
+import { RiWhatsappLine } from "@remixicon/react";
 
 export const columns: ColumnDef<ServiceRequest>[] = [
   {
@@ -61,12 +62,16 @@ export const columns: ColumnDef<ServiceRequest>[] = [
 
       return (
         <div className="flex gap-2">
+          <Button size="sm" onClick={() => console.log("Editar", request.id)}>
+            <Phone className="h-4 w-4" />
+          </Button>
           <Button
             size="sm"
             variant="outline"
-            onClick={() => console.log("Editar", request.id)}
+            onClick={() => console.log("WhatsApp", request.id)}
+            className="bg-[#25D366] hover:bg-[#1ebe57] transition-colors"
           >
-            <Pencil className="h-4 w-4" />
+            <RiWhatsappLine className="h-5! w-5! text-white hover:text-black transition-colors" />
           </Button>
           <Button
             size="sm"
