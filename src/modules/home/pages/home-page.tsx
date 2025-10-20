@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useCommits } from "../hooks/useCommits";
 import { useStats } from "../hooks/useStats";
+import Loading from "@/components/loading";
 
 interface HomePageProps {}
 
@@ -27,7 +28,7 @@ const HomePage: FC<HomePageProps> = ({}) => {
   };
 
   if (!stats) {
-    return <Loader2 className="spin-in" />;
+    return <Loading />;
   }
 
   return (
