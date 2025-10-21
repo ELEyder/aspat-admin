@@ -1,8 +1,30 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { Phone, Trash2 } from "lucide-react";
+import { Check, Mail, Phone } from "lucide-react";
 import type { ServiceRequest } from "../types/ServiceRequest";
 import { RiWhatsappLine } from "@remixicon/react";
+import ServiceRequestConfirmModal from "../components/service-request-confirm-modal";
+import { useState } from "react";
+
+const handleWhatsappClick = (phone: string, service: string) => {
+  if (phone.length === 9) phone = "51" + phone;
+  const message = `Hola, te contacto desde el sistema para responder tu solicitud de servicio de ${service}.`;
+  const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(
+    message
+  )}`;
+  window.open(whatsappUrl, "_blank");
+};
+
+const handleCallClick = (phone: string) => {
+  if (phone.length === 9) phone = "51" + phone;
+  const telUrl = `tel:${phone}`;
+  window.open(telUrl, "_self");
+};
+
+const handleMailClick = (mail: string) => {
+  const mailUrl = `mailto:${mail}`;
+  window.open(mailUrl, "_self");
+};
 
 export const columns: ColumnDef<ServiceRequest>[] = [
   {
@@ -38,19 +60,22 @@ export const columns: ColumnDef<ServiceRequest>[] = [
     id: "statusName",
     header: "Estado",
     cell: ({ row }) => {
-      const id = row.getValue("statusId") as number | undefined;
-      const status = row.getValue("statusName") as string | undefined;
-
-      const colors: Record<number, string> = {
-        1: "text-yellow-500",
-        2: "text-green-600",
-        3: "text-red-600",
-      };
+      const request = row.original;
+      const ServiceRequest = row.original;
+      const status = ServiceRequest.status.translations?.[0]?.name;
+      const bgColor = request.status.bg_color;
+      const textColor = request.status.text_color;
 
       return (
-        <span className={colors[id ?? 0] ?? "text-gray-500"}>
+        <div
+          className={`text-center px-2 py-1 rounded-md font-medium`}
+          style={{
+            backgroundColor: bgColor.startsWith("#") ? bgColor : undefined,
+            color: textColor.startsWith("#") ? textColor : undefined,
+          }}
+        >
           {status ?? "Desconocido"}
-        </span>
+        </div>
       );
     },
   },
@@ -59,27 +84,45 @@ export const columns: ColumnDef<ServiceRequest>[] = [
     header: "Opciones",
     cell: ({ row }) => {
       const request = row.original;
-
+      const [open, setOpen] = useState(false);
       return (
         <div className="flex gap-2">
-          <Button size="sm" onClick={() => console.log("Editar", request.id)}>
+          <Button size="sm" onClick={() => handleCallClick(request.phone)}>
             <Phone className="h-4 w-4" />
           </Button>
           <Button
             size="sm"
             variant="outline"
-            onClick={() => console.log("WhatsApp", request.id)}
+            onClick={() =>
+              handleWhatsappClick(
+                request.phone,
+                request.service.translations[0].title.toString()
+              )
+            }
             className="bg-[#25D366] hover:bg-[#1ebe57] transition-colors"
           >
-            <RiWhatsappLine className="h-5! w-5! text-white hover:text-black transition-colors" />
+            <RiWhatsappLine className="h-5 w-5 text-white" />
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => handleMailClick(request.email)}
+          >
+            <Mail className="h-5 w-5" />
           </Button>
           <Button
             size="sm"
             variant="destructive"
-            onClick={() => console.log("Eliminar", request.id)}
+            onClick={() => setOpen(true)}
+            className="bg-blue-700 hover:bg-blue-900"
           >
-            <Trash2 className="h-4 w-4" />
+            <Check className="h-4 w-4" />
           </Button>
+          <ServiceRequestConfirmModal
+            request={request}
+            open={open}
+            setOpen={setOpen}
+          />
         </div>
       );
     },

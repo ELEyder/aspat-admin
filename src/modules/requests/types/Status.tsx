@@ -10,7 +10,8 @@ export interface StatusTranslation {
 export interface Status {
   id: number;
   slug: string;
-  color: string | null;
+  bg_color: string;
+  text_color: string;
   is_active: number;
   created_at: string;
   updated_at: string;

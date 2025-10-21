@@ -8,7 +8,6 @@ import {
   Users,
   BookOpen,
   BarChart3,
-  Loader2,
 } from "lucide-react";
 import { useCommits } from "../hooks/useCommits";
 import { useStats } from "../hooks/useStats";
