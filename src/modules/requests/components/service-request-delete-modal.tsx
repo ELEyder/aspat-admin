@@ -8,36 +8,44 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
-import { useConfirmServiceRequest } from "../hooks/useConfirmCourseRequest";
 import type { ServiceRequest } from "../types/ServiceRequest";
 import { Button } from "@/components/ui/button";
+import { useDeleteServiceRequest } from "../hooks/useDeleteServiceRequest";
 
-interface ServiceRequestConfirmProps {
+interface ServiceRequestDeleteProps {
   request: ServiceRequest;
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 
-const ServiceRequestConfirmModal: FC<ServiceRequestConfirmProps> = ({ request, open, setOpen }) => {
-  const confirmServiceRequest = useConfirmServiceRequest();
+const ServiceRequestDeleteModal: FC<ServiceRequestDeleteProps> = ({
+  request,
+  open,
+  setOpen,
+}) => {
+  const deleteServiceCourse = useDeleteServiceRequest();
 
   const handleClick = async () => {
-    await confirmServiceRequest.mutateAsync(request.id)
+    await deleteServiceCourse.mutateAsync(request.id);
     setOpen(false);
-  }
+  };
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>¿Deseas {request.status.id === 1 ? "marcar en proceso" : "confirmar"} esta solicitud?</AlertDialogTitle>
+          <AlertDialogTitle>¿Deseas eliminar esta solicitud?</AlertDialogTitle>
           <AlertDialogDescription>
-            Esta acción marcará como <strong>{request.status.id === 1 ? "en proceso" : "confirmar"}</strong> la solicitud de servicio.
+            Esta acción eliminará permanentemente la solicitud de servicio.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <Button onClick={handleClick} disabled={confirmServiceRequest.isPending}>
+          <Button
+          variant={"destructive"}
+            onClick={handleClick}
+            disabled={deleteServiceCourse.isPending}
+          >
             Confirmar
           </Button>
         </AlertDialogFooter>
@@ -46,4 +54,4 @@ const ServiceRequestConfirmModal: FC<ServiceRequestConfirmProps> = ({ request, o
   );
 };
 
-export default ServiceRequestConfirmModal;
+export default ServiceRequestDeleteModal;

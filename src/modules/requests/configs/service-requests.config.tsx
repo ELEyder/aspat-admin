@@ -1,30 +1,19 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { Check, Mail, Phone } from "lucide-react";
+import { Check, Eye, Mail, MoreVertical, Phone, Trash2 } from "lucide-react";
 import type { ServiceRequest } from "../types/ServiceRequest";
-import { RiWhatsappLine } from "@remixicon/react";
-import ServiceRequestConfirmModal from "../components/service-request-confirm-modal";
+import ServiceRequestDeleteModal from "../components/service-request-delete-modal";
 import { useState } from "react";
+import ServiceRequestConfirmModal from "../components/service-request-confirm-modal";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-const handleWhatsappClick = (phone: string, service: string) => {
-  if (phone.length === 9) phone = "51" + phone;
-  const message = `Hola, te contacto desde el sistema para responder tu solicitud de servicio de ${service}.`;
-  const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(
-    message
-  )}`;
-  window.open(whatsappUrl, "_blank");
-};
-
-const handleCallClick = (phone: string) => {
-  if (phone.length === 9) phone = "51" + phone;
-  const telUrl = `tel:${phone}`;
-  window.open(telUrl, "_self");
-};
-
-const handleMailClick = (mail: string) => {
-  const mailUrl = `mailto:${mail}`;
-  window.open(mailUrl, "_self");
-};
+import { RiWhatsappLine } from "@remixicon/react";
+import ServiceRequestViewModal from "../components/service-request-view-modal";
 
 export const columns: ColumnDef<ServiceRequest>[] = [
   {
@@ -85,45 +74,83 @@ export const columns: ColumnDef<ServiceRequest>[] = [
     cell: ({ row }) => {
       const request = row.original;
       const [open, setOpen] = useState(false);
+      const [openDelete, setOpenDelete] = useState(false);
+      const [openView, setOpenView] = useState(false);
+
+      const phone =
+        request.phone.length === 9 ? "51" + request.phone : request.phone;
+
       return (
-        <div className="flex gap-2">
-          <Button size="sm" onClick={() => handleCallClick(request.phone)}>
-            <Phone className="h-4 w-4" />
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() =>
-              handleWhatsappClick(
-                request.phone,
-                request.service.translations[0].title.toString()
-              )
-            }
-            className="bg-[#25D366] hover:bg-[#1ebe57] transition-colors"
-          >
-            <RiWhatsappLine className="h-5 w-5 text-white" />
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => handleMailClick(request.email)}
-          >
-            <Mail className="h-5 w-5" />
-          </Button>
-          <Button
-            size="sm"
-            variant="destructive"
-            onClick={() => setOpen(true)}
-            className="bg-blue-700 hover:bg-blue-900"
-          >
-            <Check className="h-4 w-4" />
-          </Button>
+        <>
+          <div className="flex gap-2 items-center">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <MoreVertical className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end" className="w-40">
+                <DropdownMenuItem onClick={() => setOpenView(true)}>
+                  <Eye className="mr-2 h-4 w-4" /> Ver solicitud
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() =>
+                    window.open(`https://wa.me/${phone}`, "_blank")
+                  }
+                >
+                  <RiWhatsappLine className="mr-2 h-4 w-4" /> WhatsApp
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => window.open(`tel:${phone}`, "_self")}
+                >
+                  <Phone className="mr-2 h-4 w-4" /> Llamar
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() =>
+                    window.open(`mailto:${request.email}`, "_self")
+                  }
+                >
+                  <Mail className="mr-2 h-4 w-4" /> Correo
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => setOpen(true)}
+                  className="text-green-600 bg-green-50"
+                >
+                  <Check className="mr-2 h-4 w-4" />{" "}
+                  {request.status_id === 1 ? "En proceso" : "Confirmar"}
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => setOpenDelete(true)}
+                  className="text-red-600 bg-red-50"
+                >
+                  <Trash2 className="mr-2 h-4 w-4" /> Eliminar
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
+          <ServiceRequestViewModal
+            request={request}
+            open={openView}
+            setOpen={setOpenView}
+          />
           <ServiceRequestConfirmModal
             request={request}
             open={open}
             setOpen={setOpen}
           />
-        </div>
+          <ServiceRequestDeleteModal
+            request={request}
+            open={openDelete}
+            setOpen={setOpenDelete}
+          />
+        </>
       );
     },
   },

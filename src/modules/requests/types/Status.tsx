@@ -17,11 +17,3 @@ export interface Status {
   updated_at: string;
   translations: StatusTranslation[];
 }
-
-export interface TranslatedStatus {
-  id: number;
-  slug: string;
-  name: string;
-  color: string | null;
-  is_active: number;
-}
