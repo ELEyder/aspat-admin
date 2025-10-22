@@ -21,32 +21,38 @@ export const columns: ColumnDef<ServiceRequest>[] = [
     header: "ID",
   },
   {
+    id: "dni",
     accessorKey: "dni",
     header: "DNI",
   },
   {
+    id: "first_name",
     accessorKey: "first_name",
     header: "Nombres",
   },
   {
+    id: "last_name",
     accessorKey: "last_name",
     header: "Apellidos",
   },
   {
+    id: "email",
     accessorKey: "email",
     header: "Email",
   },
   {
+    id: "phone",
     accessorKey: "phone",
     header: "Teléfono",
   },
   {
+    id: "service",
     accessorKey: "service.translations.0.title",
-    header: "Teléfono",
+    header: "Servicio",
   },
   {
     accessorFn: (row) => row.status?.translations?.[0]?.name,
-    id: "statusName",
+    id: "status",
     header: "Estado",
     cell: ({ row }) => {
       const request = row.original;
@@ -69,7 +75,6 @@ export const columns: ColumnDef<ServiceRequest>[] = [
     },
   },
   {
-    id: "actions",
     header: "Opciones",
     cell: ({ row }) => {
       const request = row.original;
@@ -120,9 +125,14 @@ export const columns: ColumnDef<ServiceRequest>[] = [
                 <DropdownMenuItem
                   onClick={() => setOpen(true)}
                   className="text-green-600 bg-green-50"
+                  disabled={request.status_id === 3}
                 >
                   <Check className="mr-2 h-4 w-4" />{" "}
-                  {request.status_id === 1 ? "En proceso" : "Confirmar"}
+                  {request.status_id === 1
+                    ? "En proceso"
+                    : request.status_id === 2
+                    ? "Confirmar"
+                    : "Confirmado"}
                 </DropdownMenuItem>
 
                 <DropdownMenuItem
