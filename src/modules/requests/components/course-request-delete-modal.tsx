@@ -8,25 +8,26 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
-import type { ServiceRequest } from "../types/ServiceRequest";
+import type { CourseRequest } from "../types/CourseRequest";
 import { Button } from "@/components/ui/button";
-import { useDeleteServiceRequest } from "../hooks/useDeleteServiceRequest";
+import { useDeleteCourseRequest } from "../hooks/useDeleteCourseRequest";
 
-interface ServiceRequestDeleteProps {
-  request: ServiceRequest;
+interface CourseRequestDeleteProps {
+  request: CourseRequest;
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 
-const ServiceRequestDeleteModal: FC<ServiceRequestDeleteProps> = ({
+const CourseRequestDeleteModal: FC<CourseRequestDeleteProps> = ({
   request,
   open,
   setOpen,
 }) => {
-  const deleteServiceCourse = useDeleteServiceRequest();
+  
+  const deleteCourseCourse = useDeleteCourseRequest();
 
   const handleClick = async () => {
-    await deleteServiceCourse.mutateAsync(request.id);
+    await deleteCourseCourse.mutateAsync(request.id);
     setOpen(false);
   };
   return (
@@ -35,7 +36,7 @@ const ServiceRequestDeleteModal: FC<ServiceRequestDeleteProps> = ({
         <AlertDialogHeader>
           <AlertDialogTitle>¿Deseas eliminar esta solicitud?</AlertDialogTitle>
           <AlertDialogDescription>
-            Esta acción eliminará permanentemente la solicitud del servicio.
+            Esta acción eliminará permanentemente la solicitud del curso.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -44,7 +45,7 @@ const ServiceRequestDeleteModal: FC<ServiceRequestDeleteProps> = ({
           <Button
           variant={"destructive"}
             onClick={handleClick}
-            disabled={deleteServiceCourse.isPending}
+            disabled={deleteCourseCourse.isPending}
           >
             Confirmar
           </Button>
@@ -54,4 +55,4 @@ const ServiceRequestDeleteModal: FC<ServiceRequestDeleteProps> = ({
   );
 };
 
-export default ServiceRequestDeleteModal;
+export default CourseRequestDeleteModal;

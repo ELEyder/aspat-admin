@@ -8,43 +8,43 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
-import type { ServiceRequest } from "../types/ServiceRequest";
+import type { CourseRequest } from "../types/CourseRequest";
 import { Button } from "@/components/ui/button";
-import { useDeleteServiceRequest } from "../hooks/useDeleteServiceRequest";
+import { useConfirmCourseRequest } from "../hooks/useConfirmCourseRequest";
 
-interface ServiceRequestDeleteProps {
-  request: ServiceRequest;
+interface CourseRequestConfirmProps {
+  request: CourseRequest;
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 
-const ServiceRequestDeleteModal: FC<ServiceRequestDeleteProps> = ({
+const CourseRequestConfirmModal: FC<CourseRequestConfirmProps> = ({
   request,
   open,
   setOpen,
 }) => {
-  const deleteServiceCourse = useDeleteServiceRequest();
+  const confirmCourseRequest = useConfirmCourseRequest();
 
   const handleClick = async () => {
-    await deleteServiceCourse.mutateAsync(request.id);
+    await confirmCourseRequest.mutateAsync(request.id);
     setOpen(false);
   };
+
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>¿Deseas eliminar esta solicitud?</AlertDialogTitle>
+          <AlertDialogTitle>¿Deseas confirmar esta solicitud?</AlertDialogTitle>
           <AlertDialogDescription>
-            Esta acción eliminará permanentemente la solicitud del servicio.
+            Esta acción dará acceso a {request.course.translations[0].title} al usuario {request.user.first_name} {request.user.last_name}.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
           <Button
-          variant={"destructive"}
             onClick={handleClick}
-            disabled={deleteServiceCourse.isPending}
+            disabled={confirmCourseRequest.isPending}
           >
             Confirmar
           </Button>
@@ -54,4 +54,4 @@ const ServiceRequestDeleteModal: FC<ServiceRequestDeleteProps> = ({
   );
 };
 
-export default ServiceRequestDeleteModal;
+export default CourseRequestConfirmModal;

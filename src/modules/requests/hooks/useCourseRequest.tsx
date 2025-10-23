@@ -1,5 +1,5 @@
+import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
-import { useEffect, useState } from "react";
 import type { ServiceRequest } from "../types/ServiceRequest";
 
 interface ApiResponse {
@@ -10,30 +10,24 @@ interface ApiResponse {
   data: ServiceRequest[];
 }
 
+const fetchCourseRequests = async (page: number, per_page: number) => {
+  const response = await api.get<ApiResponse>("requests/courses", {
+    params: { page, per_page },
+  });
+  return response.data;
+};
+
 export const useCourseRequests = (page: number, per_page: number) => {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [data, setData] = useState<ServiceRequest[]>([]);
-  const [totalPages, setTotalPages] = useState<number>(0);
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: ["course-requests", page, per_page],
+    queryFn: () => fetchCourseRequests(page, per_page),
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await api.get<ApiResponse>("requests/courses", {
-          params: { page, per_page },
-        });
-        setData(response.data.data);
-        setTotalPages(response.data.total);
-      } catch (error) {
-        console.error("Error loading", "Services", error);
-        setData([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [page]);
-  
-  return { loading, data, totalPages }
+  return {
+    loading: isLoading,
+    error: isError,
+    data: data?.data ?? [],
+    totalPages: data?.total ?? 0,
+    refetch,
+  };
 };

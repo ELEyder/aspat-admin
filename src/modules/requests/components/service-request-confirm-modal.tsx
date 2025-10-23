@@ -8,9 +8,9 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
-import { useConfirmServiceRequest } from "../hooks/useConfirmCourseRequest";
 import type { ServiceRequest } from "../types/ServiceRequest";
 import { Button } from "@/components/ui/button";
+import { useConfirmServiceRequest } from "../hooks/useConfirmServiceRequest";
 
 interface ServiceRequestConfirmProps {
   request: ServiceRequest;

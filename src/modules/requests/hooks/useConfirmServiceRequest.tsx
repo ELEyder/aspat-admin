@@ -6,16 +6,16 @@ interface ConfirmResponse {
   success: boolean;
 }
 
-export const useConfirmCourseRequest = () => {
+export const useConfirmServiceRequest = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (id: string): Promise<ConfirmResponse> => {
-      const response = await api.patch<ConfirmResponse>(`requests/courses/${id}/confirm`);
+      const response = await api.patch<ConfirmResponse>(`requests/services/${id}/confirm`);
       return response.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["course-requests"] });
+      queryClient.invalidateQueries({ queryKey: ["service-requests"] });
     },
     onError: (error) => {
       console.error("Error al confirmar solicitud:", error);
