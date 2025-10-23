@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
 
 import CourseCard from "../components/course-card/course-card";
-import CourseModulesCard from "../components/course-card/course-modules-card";
+import CourseModules from "../components/course-card/course-modules";
 import { useUpdateCourse } from "../hooks/useUpdateCourse";
 import { useUpdateOrderModules } from "../hooks/useUpdateOrderModules";
 
@@ -16,12 +16,10 @@ const CourseDetailsConfigPage: FC = () => {
   const { data, loading } = useCourseDetails(id);
   const [course, setCourse] = useState<Course | null>(data ?? null);
   const [formDirty, setFormDirty] = useState(false);
-const [modulesDirty, setModulesDirty] = useState(false);
-  const formRef = useRef<{ submit: () => Promise<void> }>(
-    null
-  );
+  const [modulesDirty, setModulesDirty] = useState(false);
+  const formRef = useRef<{ submit: () => Promise<void> }>(null);
   const modulesRef = useRef<{
-    submit: () => Promise<void>
+    submit: () => Promise<void>;
   }>(null);
   const updateCourse = useUpdateCourse();
   const updateOrderCourse = useUpdateOrderModules();
@@ -46,7 +44,7 @@ const [modulesDirty, setModulesDirty] = useState(false);
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-6">
+    <div className="min-h-screen bg-linear-to-b from-gray-50 to-gray-100 p-6">
       <div className="max-w-5xl mx-auto flex flex-col gap-6">
         <div className="sticky top-0 z-40 bg-gray-50/90 backdrop-blur-md border-b border-gray-200 py-3 px-1 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -60,10 +58,29 @@ const [modulesDirty, setModulesDirty] = useState(false);
               Volver
             </Button>
           </div>
-
+          <div className="flex gap-2 items-center justify-center">
+            {course.translations[0]?.title}
+            {course.is_active ? (
+              <div
+                className={`text-center px-2 py-1 rounded-md font-medium text-green-700`}
+              >
+                (Activado)
+              </div>
+            ) : (
+              <div
+                className={`text-center px-2 py-1 rounded-md font-medium text-red-600`}
+              >
+               (Desactivado)
+              </div>
+            )}
+          </div>
           <Button
             onClick={handleSubmit}
-            disabled={!(formDirty || modulesDirty) || updateCourse.isPending || updateOrderCourse.isPending}
+            disabled={
+              !(formDirty || modulesDirty) ||
+              updateCourse.isPending ||
+              updateOrderCourse.isPending
+            }
             className="w-35"
           >
             {updateCourse.isPending ? (
@@ -82,7 +99,7 @@ const [modulesDirty, setModulesDirty] = useState(false);
             onDirtyChange={setFormDirty}
           />
 
-          <CourseModulesCard
+          <CourseModules
             course={course}
             setCourse={setCourse}
             updateOrderCourse={updateOrderCourse}

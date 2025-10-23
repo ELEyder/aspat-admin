@@ -1,12 +1,21 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { Pencil, Copy, Trash2, Check, Cross, X } from "lucide-react";
+import {
+  Pencil,
+  Copy,
+  Trash2,
+  Badge,
+  CheckCircle,
+  XCircle,
+  Check,
+} from "lucide-react";
 import type { Course } from "../types/Course";
 import { useNavigate } from "react-router-dom";
 import CourseDeleteModal from "../components/course-delete-modal";
 import { useState } from "react";
 import CourseDuplicateModal from "../components/course-duplicate-modal";
-import { Checkbox } from "@/components/ui/checkbox";
+import CourseEnableModal from "../components/course-enable-modal";
+import CourseDisableModal from "../components/course-disable-modal";
 
 export const columns: ColumnDef<Course>[] = [
   {
@@ -34,7 +43,21 @@ export const columns: ColumnDef<Course>[] = [
     accessorKey: "is_active",
     header: "Activado",
     cell: ({ row }) => {
-      row.original.is_active ? <Check /> : <X />;
+      const request = row.original;
+      const isActive = request.is_active == true;
+      return (
+        <div className="space-y-1">
+          {isActive ? (
+            <Badge className="bg-green-100 text-green-700 flex items-center gap-1">
+              <CheckCircle /> Sí
+            </Badge>
+          ) : (
+            <Badge className="bg-gray-100 text-gray-600 flex items-center gap-1">
+              <XCircle /> No
+            </Badge>
+          )}
+        </div>
+      );
     },
   },
   {
@@ -44,6 +67,8 @@ export const columns: ColumnDef<Course>[] = [
       const navigate = useNavigate();
       const [openDelete, setOpenDelete] = useState(false);
       const [openDuplicate, setOpenDuplicate] = useState(false);
+      const [openEnable, setOpenEnable] = useState(false);
+      const [openDisable, setOpenDisable] = useState(false);
       return (
         <div className="flex gap-2">
           <Button
@@ -61,6 +86,14 @@ export const columns: ColumnDef<Course>[] = [
           </Button>
           <Button
             size="sm"
+            variant="outline"
+            onClick={() => request.is_active ? setOpenDisable(true) : setOpenEnable(true)}
+            className={!request.is_active ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}
+          >
+            {!request.is_active ? <Check /> : <XCircle />}
+          </Button>
+          <Button
+            size="sm"
             variant="destructive"
             onClick={() => setOpenDelete(true)}
           >
@@ -75,6 +108,18 @@ export const columns: ColumnDef<Course>[] = [
             course={request}
             open={openDelete}
             setOpen={setOpenDelete}
+          />
+
+          <CourseEnableModal
+            course={request}
+            open={openEnable}
+            setOpen={setOpenEnable}
+          />
+
+          <CourseDisableModal
+            course={request}
+            open={openDisable}
+            setOpen={setOpenDisable}
           />
         </div>
       );

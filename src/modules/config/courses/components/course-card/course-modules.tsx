@@ -23,7 +23,7 @@ import {
   type Dispatch,
 } from "react";
 import type { Course } from "../../types/Course";
-import { SortableModule } from "./sortable-module";
+import { CourseModuleCard } from "./course-module-card";
 import type { UseMutationResult } from "@tanstack/react-query";
 import type { UpdateOrderModulesValues } from "../../hooks/useUpdateOrderModules";
 import { useAddModule } from "../../hooks/useAddModule";
@@ -44,7 +44,7 @@ interface CourseModulesCardProps {
   >;
 }
 
-const CourseModulesCard = forwardRef(function CourseModulesCard(
+const CourseModules = forwardRef(function CourseModulesCard(
   {
     course,
     setCourse,
@@ -174,7 +174,7 @@ const CourseModulesCard = forwardRef(function CourseModulesCard(
           >
             <ul className="space-y-3">
               {course.modules.map((module, index) => (
-                <SortableModule
+                <CourseModuleCard
                   key={module.id}
                   module={module}
                   index={index}
@@ -186,9 +186,9 @@ const CourseModulesCard = forwardRef(function CourseModulesCard(
                   className="w-full"
                   variant={"secondary"}
                   onClick={handleAddModule}
-                  disabled={addModule.isPending}
+                  disabled={updateOrderCourse.isPending || addModule.isPending}
                 >
-                  {updateOrderCourse.isPending ? (
+                  {addModule.isPending ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   ) : (
                     <>
@@ -216,4 +216,4 @@ const CourseModulesCard = forwardRef(function CourseModulesCard(
   );
 });
 
-export default CourseModulesCard;
+export default CourseModules;

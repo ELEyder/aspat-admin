@@ -12,7 +12,7 @@ interface SortableModuleProps {
   onDelete: (id: number) => void;
 }
 
-export function SortableModule({
+export function CourseModuleCard({
   module,
   index,
   onDelete,

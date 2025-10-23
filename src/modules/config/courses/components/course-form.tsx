@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Ban, CheckCircle2, Loader2 } from "lucide-react";
 
 import {
   Form,
@@ -17,9 +17,18 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import type { Course } from "../types/Course";
 import MDEditor from "@uiw/react-md-editor";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const schema = z.object({
   slug: z.string().min(1, "El slug no puede estar vacío"),
+  is_active: z.string(),
   translations: z
     .array(
       z.object({
@@ -37,11 +46,11 @@ export const CourseForm = forwardRef(function CourseForm(
   {
     course,
     onSubmit,
-    onDirtyChange
+    onDirtyChange,
   }: {
     onSubmit: (data: CourseFormValues) => Promise<void> | void;
     course: Course;
-    onDirtyChange : (dirty: boolean) => void;
+    onDirtyChange: (dirty: boolean) => void;
   },
   ref
 ) {
@@ -52,6 +61,7 @@ export const CourseForm = forwardRef(function CourseForm(
     mode: "onChange",
     defaultValues: {
       slug: course.slug,
+      is_active: course.is_active.toString(),
       translations: course.translations,
     },
   });
@@ -63,7 +73,7 @@ export const CourseForm = forwardRef(function CourseForm(
   useEffect(() => {
     onDirtyChange?.(isDirty);
   }, [isDirty]);
-  
+
   const handleSubmit = async (data: CourseFormValues) => {
     if (!isDirty) return;
     try {
@@ -146,11 +156,39 @@ export const CourseForm = forwardRef(function CourseForm(
           )}
         />
 
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={loading || !isDirty}
-        >
+        <FormField
+          control={form.control}
+          name="is_active"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Estado</FormLabel>
+              <FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  defaultValue={field.value}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Selecciona un estado" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="1">
+                        <CheckCircle2 className="text-green-600" /> Activado
+                      </SelectItem>
+                      <SelectItem value="0">
+                        <Ban className="text-red-600" /> Desactivado
+                      </SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit" className="w-full" disabled={loading || !isDirty}>
           {loading ? <Loader2 className="animate-spin" /> : "Guardar Cambios"}
         </Button>
       </form>
