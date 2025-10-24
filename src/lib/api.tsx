@@ -6,15 +6,12 @@ const api = axios.create({
   params: {
     locale: "es",
   },
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
-
 
 api.interceptors.request.use((config) => {
   const token = Cookies.get("token");
   if (token) config.headers["Authorization"] = `Bearer ${token}`;
+  
   return config;
 });
 

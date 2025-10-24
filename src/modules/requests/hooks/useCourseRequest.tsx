@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "@/lib/api";
-import type { ServiceRequest } from "../types/ServiceRequest";
+import type { CourseRequest } from "../types/CourseRequest";
 
 interface ApiResponse {
   current_page: number;
   last_page: number;
   per_page: number;
   total: number;
-  data: ServiceRequest[];
+  data: CourseRequest[];
 }
 
 const fetchCourseRequests = async (page: number, per_page: number) => {

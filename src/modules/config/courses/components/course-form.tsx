@@ -25,16 +25,33 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
 
 const schema = z.object({
   slug: z.string().min(1, "El slug no puede estar vacío"),
   is_active: z.string(),
+  image_url: z
+    .any()
+    .optional()
+    .refine((file) => {
+      if (!file) return true;
+      if (!(file instanceof File)) return false;
+      const allowedTypes = [
+        "image/png",
+        "image/jpeg",
+        "image/jpg",
+        "image/webp",
+        "image/gif",
+        "image/svg+xml",
+      ];
+      return allowedTypes.includes(file.type);
+    }, "Debe ser una imagen válida (png, jpg, jpeg, webp, gif)"),
   translations: z
     .array(
       z.object({
         title: z.string().min(1, "El título del módulo es obligatorio"),
-        summary: z.string().min(1, "El título del módulo es obligatorio"),
-        description: z.string().min(1, "La duración es obligatoria"),
+        summary: z.string().min(1, "El resumen es obligatorio"),
+        description: z.string().min(1, "La descripción es obligatoria"),
       })
     )
     .min(1, "Debe haber al menos una traducción"),
@@ -56,15 +73,26 @@ export const CourseForm = forwardRef(function CourseForm(
 ) {
   const [loading, setLoading] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
+  const [preview, setPreview] = useState<string | null>(
+    course.image_url || null
+  );
+
   const form = useForm<CourseFormValues>({
     resolver: zodResolver(schema),
     mode: "onChange",
     defaultValues: {
+      image_url: null,
       slug: course.slug,
       is_active: course.is_active.toString(),
       translations: course.translations,
     },
   });
+
+  useEffect(() => {
+    if (Object.keys(form.formState.errors).length > 0) {
+      toast.error("Por favor, corrige los errores en el formulario.");
+    }
+  }, [form.formState.errors]);
 
   useEffect(() => {
     setIsDirty(form.formState.isDirty);
@@ -80,6 +108,7 @@ export const CourseForm = forwardRef(function CourseForm(
       setLoading(true);
       await onSubmit(data);
       form.reset(data);
+      setPreview(null);
     } finally {
       setLoading(false);
     }
@@ -89,12 +118,48 @@ export const CourseForm = forwardRef(function CourseForm(
     submit: form.handleSubmit(handleSubmit),
   }));
 
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    form.setValue("image_url", file);
+    form.trigger("image_url");
+    setIsDirty(true);
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
         className="space-y-6 w-full mx-auto"
       >
+        <FormField
+          control={form.control}
+          name="image_url"
+          render={() => (
+            <FormItem>
+              <FormLabel>Imagen del curso</FormLabel>
+              <FormControl>
+                <div className="flex flex-col gap-3">
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                  {preview && (
+                    <img
+                      src={preview}
+                      alt="Vista previa"
+                      className="aspect-video object-cover rounded-lg border"
+                    />
+                  )}
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="slug"
@@ -108,6 +173,7 @@ export const CourseForm = forwardRef(function CourseForm(
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="translations.0.title"

@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { toast } from "sonner";
-import type { CourseFormValues } from "../components/course-form";
 import axios from "axios";
 
 export const useUpdateCourse = () => {
@@ -13,14 +12,15 @@ export const useUpdateCourse = () => {
       data,
     }: {
       id: string;
-      data: CourseFormValues;
+      data: FormData;
     }) => {
-      console.log(data);
-      const response = await api.put(`courses/${id}`, data);
+      data.append("_method", "PUT");
+      console.log("Updating course with data:", Array.from(data.entries()));
+      const response = await api.post(`courses/${id}`, data);
       return response.data;
     },
-    onSuccess: (_data, { id }) => {
-      toast.success("Curso actualizado correctamente");
+    onSuccess: (data, { id }) => {
+      toast.success(data.message || "Curso actualizado correctamente");
       queryClient.invalidateQueries({ queryKey: ["courses"] });
       queryClient.invalidateQueries({ queryKey: ["course", id] });
     },

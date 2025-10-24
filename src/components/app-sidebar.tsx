@@ -62,9 +62,9 @@ export function AppSidebar() {
       icon: Settings,
       children: [
         { title: "Cursos", url: "/config/courses" },
-        { title: "Usuarios", url: "/configuracion/usuarios" },
-        { title: "Roles", url: "/configuracion/roles" },
-        { title: "Permisos", url: "/configuracion/permisos" },
+        { title: "Usuarios", url: "/config/usuarios" },
+        { title: "Roles", url: "/config/roles" },
+        { title: "Permisos", url: "/config/permisos" },
       ],
     },
     {

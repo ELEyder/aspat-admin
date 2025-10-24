@@ -1,9 +1,9 @@
 import type { FC } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
-import Layout from "../layouts/layout";
 import { PrivateRoute } from "@/components/private-route";
 import LoadingPage from "@/pages/loading-page";
+import Layout from "@/layouts/layout";
 
 const HomePage = lazy(() => import("../modules/home/pages/home-page"));
 const ServiceRequestsPage = lazy(() => import("@/modules/requests/pages/service-requests-page"));

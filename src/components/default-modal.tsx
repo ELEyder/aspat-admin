@@ -1,6 +1,5 @@
 import { useState, type FC } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Button } from "./ui/button";
 
 interface DefaultModalProps {
@@ -48,24 +47,24 @@ const DefaultModal: FC<DefaultModalProps> = ({
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent
           onInteractOutside={handleOutsideClick}
-          className={`${sizeMap[size]} !w-full !p-8 max-h-[95vh] overflow-y-auto`}
+          className={`${sizeMap[size]} w-full! p-8! max-h-[95vh] overflow-y-auto`}
           aria-describedby={undefined}
         >
           {title ? (
             <DialogTitle>{title}</DialogTitle>
           ) : (
-            <VisuallyHidden>
+            <div className="hidden">
               <DialogTitle>Título invisible para accesibilidad</DialogTitle>
-            </VisuallyHidden>
+            </div>
           )}
           {children}
         </DialogContent>
       </Dialog>
       <Dialog open={openWarning} onOpenChange={setOpenWarning}>
-        <DialogContent className="!p-8" aria-describedby={undefined}>
-          <VisuallyHidden>
+        <DialogContent className="p-8!" aria-describedby={undefined}>
+          <div className="hidden">
             <DialogTitle>Do you want to close this modal?</DialogTitle>
-          </VisuallyHidden>
+          </div>
           <form className="flex flex-col gap-4 items-center">
             <h3>Do you want to close this modal?</h3>
             <p>

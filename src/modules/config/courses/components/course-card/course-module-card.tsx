@@ -2,9 +2,20 @@ import { useSortable } from "@dnd-kit/sortable";
 import type { Course } from "../../types/Course";
 import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@/components/ui/button";
-import { ChevronsUpDownIcon, Edit, Trash } from "lucide-react";
+import {
+  ChevronsUpDownIcon,
+  Edit,
+  MoreVertical,
+  Trash,
+} from "lucide-react";
 import ModuleDeleteModal from "../module-delete-modal";
 import { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface SortableModuleProps {
   module: Course["modules"][0];
@@ -17,7 +28,6 @@ export function CourseModuleCard({
   index,
   onDelete,
 }: SortableModuleProps) {
-
   const [open, setOpen] = useState(false);
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: module.id });
@@ -37,7 +47,7 @@ export function CourseModuleCard({
         <ChevronsUpDownIcon />
       </Button>
       <div className="flex items-center gap-3 w-full">
-        <div className="w-10 h-10 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full font-bold">
+        <div className="hidden w-10 h-10 sm:flex items-center justify-center bg-blue-100 text-blue-600 rounded-full font-bold">
           {index + 1}
         </div>
         <div>
@@ -47,14 +57,31 @@ export function CourseModuleCard({
         </div>
       </div>
       <div className="flex gap-2">
-        <Button>
-          <Edit />
-        </Button>
-        <Button variant="destructive" onClick={() => setOpen(true)}>
-          <Trash />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm">
+              <MoreVertical className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-40">
+            <DropdownMenuItem>
+              <Edit /> Editar
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => setOpen(true)}
+              className="bg-red-50 focus:text-red-600 text-red-600"
+            >
+              <Trash className="text-red-600" /> Eliminar
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
-      <ModuleDeleteModal open={open} setOpen={setOpen} onDelete={onDelete} module={module}/>
+      <ModuleDeleteModal
+        open={open}
+        setOpen={setOpen}
+        onDelete={onDelete}
+        module={module}
+      />
     </li>
   );
 }
