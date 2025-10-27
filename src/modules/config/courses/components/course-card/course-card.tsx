@@ -32,7 +32,7 @@ const CourseCard: FC<CourseCardProps> = ({
     const formData = new FormData();
 
     formData.append("slug", data.slug);
-    formData.append("is_active", data.is_active ? "1" : "0"); // Si en Zod lo transformaste a boolean
+    formData.append("is_active", data.is_active ? "1" : "0");
 
     data.translations.forEach((translation, index) => {
       formData.append(`translations[${index}][title]`, translation.title);
@@ -40,9 +40,8 @@ const CourseCard: FC<CourseCardProps> = ({
       formData.append(`translations[${index}][description]`, translation.description);
     });
 
-    // Manejo de la imagen
     if (data.image_url instanceof File) {
-      formData.append("image_file", data.image_url); // 'image_file' es el nombre que tu backend esperaría para el archivo
+      formData.append("image_file", data.image_url);
     } 
 
     await updateCourse.mutateAsync({

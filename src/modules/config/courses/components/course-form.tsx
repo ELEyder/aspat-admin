@@ -108,7 +108,6 @@ export const CourseForm = forwardRef(function CourseForm(
       setLoading(true);
       await onSubmit(data);
       form.reset(data);
-      setPreview(null);
     } finally {
       setLoading(false);
     }
