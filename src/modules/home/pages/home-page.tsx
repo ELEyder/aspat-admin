@@ -3,7 +3,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   Settings,
   Bell,
-  Activity,
   Github,
   Users,
   BookOpen,
@@ -12,6 +11,7 @@ import {
 import { useCommits } from "../hooks/useCommits";
 import { useStats } from "../hooks/useStats";
 import Loading from "@/components/loading";
+import CommitsCard from "../components/commits-card";
 
 interface HomePageProps {}
 
@@ -26,7 +26,7 @@ const HomePage: FC<HomePageProps> = ({}) => {
     settings: Settings,
   };
 
-  if (!stats) {
+  if (!stats || !data) {
     return <Loading />;
   }
 
@@ -53,29 +53,22 @@ const HomePage: FC<HomePageProps> = ({}) => {
         })}
       </div>
 
-      <Card className="rounded-2xl shadow-sm">
-        <CardContent className="p-4">
-          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <Activity className="h-5 w-5 text-gray-600" /> Actividad Reciente
-          </h2>
-          <ul className="space-y-3 text-gray-700">
-            {data?.map((commit, index) => (
-              <li
-                key={index}
-                className="flex justify-between items-center border-b py-2 last:border-none"
-              >
-                <div>
-                  <p className="font-medium">{commit.message}</p>
-                  <p className="text-xs text-gray-400">
-                    {commit.author} • {new Date(commit.date!).toLocaleString()}
-                  </p>
-                </div>
-                <Github className="h-5 w-5 text-gray-500" />
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
+        <CommitsCard
+          commmits={data.aspat}
+          title={"Actividad Reciente de ASPAT PERÚ"}
+        />
+        <CommitsCard
+          commmits={data["aspat-backend"]}
+          title={"Actividad Reciente de ASPAT BACKEND"}
+        />
+        <CommitsCard
+          commmits={data["aspat-platform"]}
+          title={"Actividad Reciente de ASPAT PLATFORM"}
+        />
+        <CommitsCard
+          commmits={data["aspat-admin"]}
+          title={"Actividad Reciente de ASPAT ADMIN"}
+        />
 
       <div className="grid gap-4 md:grid-cols-3">
         <Card className="rounded-2xl shadow-sm hover:shadow-md transition-shadow">
@@ -92,8 +85,8 @@ const HomePage: FC<HomePageProps> = ({}) => {
           <CardContent className="p-4 flex items-center gap-4">
             <Github className="h-6 w-6 text-gray-700" />
             <div>
-              <p className="text-sm text-gray-500">Commits recientes</p>
-              <p className="font-bold">{data?.length || 0}</p>
+              <p className="text-sm text-gray-500">Consultas recibidas</p>
+              <p className="font-bold">en proceso</p>
             </div>
           </CardContent>
         </Card>

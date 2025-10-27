@@ -1,6 +1,7 @@
 import {
   ChevronDown,
   ChevronUp,
+  HeartPlus,
   Home,
   IdCard,
   Inbox,
@@ -48,6 +49,11 @@ export function AppSidebar() {
       title: "Inicio",
       url: "/",
       icon: Home,
+    },
+        {
+      title: "Donaciones",
+      url: "/donations",
+      icon: HeartPlus,
     },
     {
       title: "Solicitudes",

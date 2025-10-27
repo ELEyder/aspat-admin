@@ -10,6 +10,7 @@ const ServiceRequestsPage = lazy(() => import("@/modules/requests/pages/service-
 const CourseRequestsPage = lazy(() => import("@/modules/requests/pages/course-requests-page"));
 const ConfigCoursesPage = lazy(() => import("@/modules/config/courses/pages/courses-config-page"));
 const ConfigCourseDetailsPage = lazy(() => import("@/modules/config/courses/pages/course-details-config-page"));
+const DonationRequestsPage = lazy(() => import("@/modules/donations/pages/donation-page"));
 
 const AppRoutes: FC = () => {
   return (
@@ -24,6 +25,7 @@ const AppRoutes: FC = () => {
           }
         >
           <Route index element={<HomePage />} />
+          <Route path="/donations" element={<DonationRequestsPage />} />
           <Route path="/requests/services" element={<ServiceRequestsPage />} />
           <Route path="/requests/courses" element={<CourseRequestsPage />} />
           <Route path="/config/courses" element={<ConfigCoursesPage />} />

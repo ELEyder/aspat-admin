@@ -1,75 +1,77 @@
+// src/data/columns/donation-columns.tsx
 import { type ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { Check, Eye, Mail, MoreVertical, Phone, Trash2 } from "lucide-react";
-import type { ServiceRequest } from "../types/ServiceRequest";
-import ServiceRequestDeleteModal from "../components/service-request-delete-modal";
+import {
+  CheckCircle,
+  Eye,
+  Mail,
+  MoreVertical,
+  Phone,
+  Trash2,
+} from "lucide-react";
 import { useState } from "react";
-import ServiceRequestConfirmModal from "../components/service-request-confirm-modal";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import type { Donation } from "../types/Donation";
 import { RiWhatsappLine } from "@remixicon/react";
-import ServiceRequestViewModal from "../components/service-request-view-modal";
+import DonationConfirmModal from "../components/donation-confirm-modal";
+import DonationDeleteModal from "../components/donation-delete-modal";
+import DonationViewModal from "../components/donation-view-modal";
 
-export const columns: ColumnDef<ServiceRequest>[] = [
+export const columns: ColumnDef<Donation>[] = [
   {
     accessorKey: "id",
     header: "ID",
   },
   {
-    id: "dni",
-    accessorKey: "dni",
-    header: "DNI",
-  },
-  {
-    id: "first_name",
     accessorKey: "first_name",
-    header: "Nombres",
+    header: "Nombre",
   },
   {
-    id: "last_name",
     accessorKey: "last_name",
     header: "Apellidos",
   },
   {
-    id: "email",
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: "dni",
+    header: "DNI",
   },
   {
-    id: "phone",
     accessorKey: "phone",
     header: "Teléfono",
   },
   {
-    id: "service",
-    accessorKey: "service.translations.0.title",
-    header: "Servicio",
+    accessorKey: "email",
+    header: "Correo",
   },
   {
-    accessorFn: (row) => row.status?.translations?.[0]?.name,
+    accessorKey: "donation_type",
+    header: "Tipo de Donación",
+    cell: ({ row }) => {
+      const type = row.original.donation_type;
+      const label =
+        type === "money" ? "Dinero" : type === "goods" ? "Bienes" : type;
+      return <span className="font-medium">{label}</span>;
+    },
+  },
+  {
     id: "status",
     header: "Estado",
     cell: ({ row }) => {
-      const request = row.original;
-      const ServiceRequest = row.original;
-      const status = ServiceRequest.status.translations?.[0]?.name;
-      const bgColor = request.status.bg_color;
-      const textColor = request.status.text_color;
+      const status = row.original.status;
+      const name = status?.translations?.[0]?.name ?? "Desconocido";
+      const bg = status?.bg_color ?? "#e5e7eb";
+      const color = status?.text_color ?? "#111827";
 
       return (
         <div
-          className={`text-center px-2 py-1 rounded-md font-medium`}
-          style={{
-            backgroundColor: bgColor.startsWith("#") ? bgColor : undefined,
-            color: textColor.startsWith("#") ? textColor : undefined,
-          }}
+          className="text-center px-2 py-1 rounded-md font-medium"
+          style={{ backgroundColor: bg, color }}
         >
-          {status ?? "Desconocido"}
+          {name}
         </div>
       );
     },
@@ -77,13 +79,10 @@ export const columns: ColumnDef<ServiceRequest>[] = [
   {
     header: "Opciones",
     cell: ({ row }) => {
-      const request = row.original;
-      const [open, setOpen] = useState(false);
-      const [openDelete, setOpenDelete] = useState(false);
+      const donation = row.original;
       const [openView, setOpenView] = useState(false);
-
-      const phone =
-        request.phone.length === 9 ? "51" + request.phone : request.phone;
+      const [openConfirm, setOpenConfirm] = useState(false);
+      const [openDelete, setOpenDelete] = useState(false);
 
       return (
         <>
@@ -95,42 +94,44 @@ export const columns: ColumnDef<ServiceRequest>[] = [
                 </Button>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent align="end" className="w-40">
+              <DropdownMenuContent align="end" className="w-44">
                 <DropdownMenuItem onClick={() => setOpenView(true)}>
-                  <Eye className="mr-2 h-4 w-4" /> Ver solicitud
+                  <Eye className="mr-2 h-4 w-4" /> Ver detalle
                 </DropdownMenuItem>
 
                 <DropdownMenuItem
                   onClick={() =>
-                    window.open(`https://wa.me/${phone}`, "_blank")
+                    window.open(`https://wa.me/${row.original.phone}`, "_blank")
                   }
                 >
                   <RiWhatsappLine className="mr-2 h-4 w-4" /> WhatsApp
                 </DropdownMenuItem>
 
                 <DropdownMenuItem
-                  onClick={() => window.open(`tel:${phone}`, "_self")}
+                  onClick={() =>
+                    window.open(`tel:${row.original.phone}`, "_self")
+                  }
                 >
                   <Phone className="mr-2 h-4 w-4" /> Llamar
                 </DropdownMenuItem>
 
                 <DropdownMenuItem
                   onClick={() =>
-                    window.open(`mailto:${request.email}`, "_self")
+                    window.open(`mailto:${row.original.email}`, "_self")
                   }
                 >
                   <Mail className="mr-2 h-4 w-4" /> Correo
                 </DropdownMenuItem>
 
                 <DropdownMenuItem
-                  onClick={() => setOpen(true)}
+                  onClick={() => setOpenConfirm(true)}
                   className="text-green-600 bg-green-50"
-                  disabled={request.status_id === 3}
+                  disabled={donation.status_id === 3}
                 >
-                  <Check className="mr-2 h-4 w-4" />{" "}
-                  {request.status_id === 1
+                  <CheckCircle className="mr-2 h-4 w-4" />{" "}
+                  {donation.status_id === 1
                     ? "Marcar en proceso"
-                    : request.status_id === 2
+                    : donation.status_id === 2
                     ? "Confirmar"
                     : "Confirmado"}
                 </DropdownMenuItem>
@@ -144,21 +145,20 @@ export const columns: ColumnDef<ServiceRequest>[] = [
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-
-          <ServiceRequestViewModal
-            request={request}
+          <DonationViewModal 
             open={openView}
             setOpen={setOpenView}
+            donation={donation}
           />
-          <ServiceRequestConfirmModal
-            request={request}
-            open={open}
-            setOpen={setOpen}
+          <DonationConfirmModal
+            open={openConfirm}
+            setOpen={setOpenConfirm}
+            donation={donation}
           />
-          <ServiceRequestDeleteModal
-            request={request}
+          <DonationDeleteModal
             open={openDelete}
             setOpen={setOpenDelete}
+            donation={donation}
           />
         </>
       );
