@@ -64,7 +64,6 @@ const CourseModules = forwardRef(function CourseModulesCard(
     onDirtyChange?.(hasChanges);
   }, [hasChanges]);
 
-
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
@@ -121,18 +120,6 @@ const CourseModules = forwardRef(function CourseModulesCard(
     });
   };
 
-  const handleDeleteModule = async (id: number) => {
-    await deleteModule.mutateAsync(id);
-
-    setCourse((prev) => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        modules: prev.modules.filter((m) => m.id !== id),
-      };
-    });
-  };
-
   const handleSubmit = async () => {
     if (!hasChanges) return;
     await updateOrderCourse.mutateAsync({
@@ -178,7 +165,8 @@ const CourseModules = forwardRef(function CourseModulesCard(
                   key={module.id}
                   module={module}
                   index={index}
-                  onDelete={() => handleDeleteModule(module.id)}
+                  setCourse={setCourse}
+                  deleteModule={deleteModule}
                 />
               ))}
               <li className="w-full">

@@ -2,12 +2,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import type { Course } from "../../types/Course";
 import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@/components/ui/button";
-import {
-  ChevronsUpDownIcon,
-  Edit,
-  MoreVertical,
-  Trash,
-} from "lucide-react";
+import { ChevronsUpDownIcon, Edit, MoreVertical, Trash } from "lucide-react";
 import ModuleDeleteModal from "../module-delete-modal";
 import { useState } from "react";
 import {
@@ -16,19 +11,23 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useNavigate } from "react-router-dom";
 
 interface SortableModuleProps {
   module: Course["modules"][0];
   index: number;
-  onDelete: (id: number) => void;
+  deleteModule: any;
+  setCourse: React.Dispatch<React.SetStateAction<Course|null>>;
 }
 
 export function CourseModuleCard({
   module,
   index,
-  onDelete,
+  deleteModule,
+  setCourse,
 }: SortableModuleProps) {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: module.id });
   const style = {
@@ -64,7 +63,7 @@ export function CourseModuleCard({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={()=> navigate(`/config/course-modules/${module.id}`)}>
               <Edit /> Editar
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -79,8 +78,9 @@ export function CourseModuleCard({
       <ModuleDeleteModal
         open={open}
         setOpen={setOpen}
-        onDelete={onDelete}
+        deleteModule={deleteModule}
         module={module}
+        setCourse={setCourse}
       />
     </li>
   );

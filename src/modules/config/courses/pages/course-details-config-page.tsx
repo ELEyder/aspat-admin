@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type FC } from "react";
 import { useParams } from "react-router-dom";
-import { useCourseDetails } from "../hooks/useCourseDetails";
 import type { Course } from "../types/Course";
 import Loading from "@/components/loading";
 import { Button } from "@/components/ui/button";
@@ -10,6 +9,7 @@ import CourseCard from "../components/course-card/course-card";
 import CourseModules from "../components/course-card/course-modules";
 import { useUpdateCourse } from "../hooks/useUpdateCourse";
 import { useUpdateOrderModules } from "../hooks/useUpdateOrderModules";
+import { useCourseDetails } from "@/modules/config/courses/hooks/useCourseDetails";
 
 const CourseDetailsConfigPage: FC = () => {
   const { id } = useParams();

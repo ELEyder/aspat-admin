@@ -1,13 +1,14 @@
 import { useEffect, useState, type FC } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useCourseDetails } from "../hooks/useCourseDetails";
 import { useParams, useSearchParams } from "react-router-dom";
-import type { Course, CourseModule } from "../types/Course";
+import type { Course } from "../types/Course";
 import CourseContentCard from "../components/course-content-card";
 import Loading from "@/components/loading";
 import DefaultImage from "@/components/default-image";
 import { Input } from "@/components/ui/input";
 import ReactMarkdown from "react-markdown";
+import { useCourseDetails } from "@/modules/config/courses/hooks/useCourseDetails";
+import type { CourseModule } from "../../course-modules/types/CourseModule";
 
 const ConfigCourseDetailsPage: FC = () => {
   const { id } = useParams();
@@ -64,9 +65,9 @@ const ConfigCourseDetailsPage: FC = () => {
               value={module.id.toString()}
             >
               <div className="grid gap-8">
-                <div className="p-4 rounded-xl bg-white shadow-md flex flex-col items-start justify-end relative overflow-hidden aspect-[21/7] w-full">
+                <div className="p-4 rounded-xl bg-white shadow-md flex flex-col items-start justify-end relative overflow-hidden aspect-21/7 w-full">
                   <DefaultImage
-                    className="absolute top-0 left-0 -z-0 w-full h-full object-cover"
+                    className="absolute top-0 left-0 z-0 w-full h-full object-cover"
                     src={course.image_url}
                   />
                   <h2 className="font-semibold mb-2 z-0 bg-white py-1 px-3 rounded">
