@@ -18,7 +18,7 @@ export const useUpdateOrderModules = () => {
       data: UpdateOrderModulesValues;
     }) => {
       console.log(data);
-      const response = await api.put(`courses/${id}/modules`, data);
+      const response = await api.put(`course-modules/${id}/order`, data);
       return response.data;
     },
     onSuccess: () => {

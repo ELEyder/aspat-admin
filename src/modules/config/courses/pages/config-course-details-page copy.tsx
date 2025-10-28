@@ -6,9 +6,9 @@ import CourseContentCard from "../components/course-content-card";
 import Loading from "@/components/loading";
 import DefaultImage from "@/components/default-image";
 import { Input } from "@/components/ui/input";
-import ReactMarkdown from "react-markdown";
 import { useCourseDetails } from "@/modules/config/courses/hooks/useCourseDetails";
 import type { CourseModule } from "../../course-modules/types/CourseModule";
+import MarkdownViewer from "@/components/markdown-viewer";
 
 const ConfigCourseDetailsPage: FC = () => {
   const { id } = useParams();
@@ -91,10 +91,11 @@ const ConfigCourseDetailsPage: FC = () => {
                 </div>
                 <div className="p-4 rounded-xl bg-white shadow-md">
                   <div className="text-black flex flex-col space-y-3 [&_img]:rounded-xl [&_img]:shadow-md [&_img]:w-full [&_img]:h-auto">
-                    <ReactMarkdown>
-                      {course?.modules[i]?.translations[0]?.description ??
-                        ""}
-                    </ReactMarkdown>
+                    <MarkdownViewer
+                      source={
+                        course?.modules[i]?.translations[0]?.description ?? ""
+                      }
+                    />
                   </div>
                 </div>
 

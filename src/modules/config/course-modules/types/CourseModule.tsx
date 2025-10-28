@@ -15,8 +15,8 @@ export interface CourseModuleTranslation {
   course_module_id: number;
   locale: string;
   title: string;
-  summary: string | null;
-  description: string | null;
+  summary: string;
+  description: string;
   created_at: string;
   updated_at: string;
 }
