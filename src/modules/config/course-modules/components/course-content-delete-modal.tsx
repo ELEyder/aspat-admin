@@ -8,25 +8,32 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import type { FC } from "react";
-import type { Course } from "../types/Course";
 import { Button } from "@/components/ui/button";
-import { useDeleteCourse } from "../hooks/useDeleteCourse";
+import type { CourseContent } from "../types/CourseContent";
 
-interface CourseDeleteModalProps {
-  course: Course;
+interface CourseContentDeleteModalProps {
+  content: CourseContent;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setContents: React.Dispatch<React.SetStateAction<CourseContent[] | null>>;
+  deleteContent: any;
 }
-const CourseDeleteModal: FC<CourseDeleteModalProps> = ({
-  course,
+const CourseContentDeleteModal: FC<CourseContentDeleteModalProps> = ({
+  content,
   open,
   setOpen,
+  setContents,
+  deleteContent,
 }) => {
-  const deleteMutation = useDeleteCourse();
+  const handleDeleteModule = async (id: number) => {
+    await deleteContent.mutateAsync(id);
 
-  const handleClick = async () => {
-    await deleteMutation.mutateAsync(course.id.toString());
-    setOpen(false)
+    setContents((prev) => {
+      if (!prev) return prev;
+      return prev.filter((m) => m.id !== id);
+    });
+    
+    setOpen(false);
   };
 
   return (
@@ -35,10 +42,9 @@ const CourseDeleteModal: FC<CourseDeleteModalProps> = ({
         <AlertDialogHeader>
           <AlertDialogTitle>¿Estas seguro?</AlertDialogTitle>
           <AlertDialogDescription>
-            Se eliminará el curso{" "}
-            <strong>{course.translations[0].title}</strong> de la base de datos.
-            Esta acción es irreversible, pruebe <strong>deshabilitar</strong> el
-            curso en su lugar.
+            Se eliminará el contenido
+            <strong>{content.translations[0].title}</strong> de la base de
+            datos. Esta acción es irreversible.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -47,10 +53,10 @@ const CourseDeleteModal: FC<CourseDeleteModalProps> = ({
           </AlertDialogCancel>
           <Button
             variant={"destructive"}
-            onClick={handleClick}
-            disabled={deleteMutation.isPending}
+            onClick={() => handleDeleteModule(content.id)}
+            disabled={deleteContent.isPending}
           >
-            Eliminar
+            {"Eliminar"}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -58,4 +64,4 @@ const CourseDeleteModal: FC<CourseDeleteModalProps> = ({
   );
 };
 
-export default CourseDeleteModal;
+export default CourseContentDeleteModal;

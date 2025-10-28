@@ -10,17 +10,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
 import type { CourseContent } from "../types/CourseContent";
+import CourseContentDeleteModal from "./course-content-delete-modal";
+import { useDeleteCourseContent } from "../hooks/useDeleteCourseContent";
+import { useState } from "react";
 
-interface SortableModuleProps {
+interface CourseContentCard {
   content: CourseContent;
   index: number;
+  setContents: React.Dispatch<React.SetStateAction<any>>;
 }
 
-export function CourseContentCard({
-  content,
-  index,
-}: SortableModuleProps) {
+export function CourseContentCard({ content, index, setContents }: CourseContentCard) {
   const navigate = useNavigate();
+  const deleteContent = useDeleteCourseContent();
+  const [openDelete, setOpenDelete] = useState(false);
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: content.id });
   const style = {
@@ -56,11 +59,13 @@ export function CourseContentCard({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
-            <DropdownMenuItem onClick={()=> navigate(`/config/course-modules/${content.id}`)}>
+            <DropdownMenuItem
+              onClick={() => navigate(`/config/course-modules/${content.id}`)}
+            >
               <Edit /> Editar
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => console.log(true)}
+              onClick={() => setOpenDelete(true)}
               className="bg-red-50 focus:text-red-600 text-red-600"
             >
               <Trash className="text-red-600" /> Eliminar
@@ -68,6 +73,13 @@ export function CourseContentCard({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      <CourseContentDeleteModal
+        deleteContent={deleteContent}
+        content={content}
+        open={openDelete}
+        setOpen={setOpenDelete}
+        setContents={setContents}
+      />
     </li>
   );
 }

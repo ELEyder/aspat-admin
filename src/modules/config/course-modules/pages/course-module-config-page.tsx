@@ -4,8 +4,7 @@ import { useCourseMoule } from "../hooks/useCourseModule";
 import LoadingPage from "@/pages/loading-page";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Plus, ArrowLeft, Loader2 } from "lucide-react";
+import { Plus, ArrowLeft, Loader2, CassetteTape } from "lucide-react";
 import {
   CourseModuleForm,
   type CourseModuleFormValues,
@@ -27,11 +26,13 @@ import {
 } from "@dnd-kit/sortable";
 import type { CourseContent } from "../types/CourseContent";
 import { useAddCourseContent } from "../hooks/useAddCourseContent";
+import { useUpdateCourseContentsOrder } from "../hooks/useUpdateCourseContentsOrder";
 
 const CourseModuleConfigPage: FC = () => {
   const { id } = useParams();
   const { data: module, isLoading } = useCourseMoule(id ?? "");
   const updateModule = useUpdateCourseModule();
+  const updateContentsOrder = useUpdateCourseContentsOrder();
   const sensors = useSensors(useSensor(PointerSensor));
   const addContent = useAddCourseContent();
   const [contents, setContents] = useState<CourseContent[]>([]);
@@ -45,6 +46,17 @@ const CourseModuleConfigPage: FC = () => {
 
   const handleSubmit = async (data: CourseModuleFormValues) => {
     await updateModule.mutateAsync({ id: module.id.toString(), data });
+  };
+
+  const handleSaveOrder = async () => {
+    await updateContentsOrder.mutateAsync({ id: module.id.toString(), data: {
+        contents: contents.map((module, index) => {
+          return {
+            id: module.id,
+            order: index + 1,
+          };
+        }),
+      }, });
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -87,7 +99,6 @@ const CourseModuleConfigPage: FC = () => {
     setContents([...contents, res.content]);
   };
 
-
   return (
     <div className="absolute w-full min-h-screen bg-gray-50">
       <div className="sticky w-full top-0 z-40 bg-gray-50/90 backdrop-blur-md border-b border-gray-200 px-6 py-2">
@@ -104,33 +115,16 @@ const CourseModuleConfigPage: FC = () => {
             {updateModule.isPending ? (
               <Loader2 className="animate-spin h-4 w-4 mr-2" />
             ) : (
-              "Guardar cambios"
+              <>
+                <CassetteTape className="h-4 w-4 mr-2" />
+                Guardar Cambios
+              </>
             )}
           </Button>
         </div>
       </div>
 
       <div className="p-6 space-y-6 max-w-5xl mx-auto">
-        <Card>
-          <CardHeader>
-            <CardTitle>Datos del módulo</CardTitle>
-          </CardHeader>
-          <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="font-medium">Orden</label>
-              <Input type="number" value={module.order} readOnly />
-            </div>
-            <div>
-              <label className="font-medium">Creado el</label>
-              <Input
-                type="text"
-                value={new Date(module.created_at).toLocaleString()}
-                readOnly
-              />
-            </div>
-          </CardContent>
-        </Card>
-
         <Card>
           <CardHeader>
             <CardTitle>Traducciones</CardTitle>
@@ -147,9 +141,6 @@ const CourseModuleConfigPage: FC = () => {
         <Card>
           <CardHeader className="flex items-center justify-between">
             <CardTitle>Contenidos del módulo</CardTitle>
-            <Button size="sm" onClick={handleAddContent}>
-              <Plus className="h-4 w-4 mr-2" /> Agregar contenido
-            </Button>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <DndContext
@@ -167,8 +158,26 @@ const CourseModuleConfigPage: FC = () => {
                       key={content.id}
                       index={index}
                       content={content}
+                      setContents={setContents}
                     />
                   ))}
+                  <Button
+                    className="w-full"
+                    onClick={handleAddContent}
+                    disabled={addContent.isPending}
+                    variant="outline"
+                  >
+                    {addContent.isPending ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      <Plus />
+                    )}
+                    Agregar contenido
+                  </Button>
+
+                  <Button className="w-full" onClick={handleSaveOrder}>
+                    <CassetteTape className="h-4 w-4 mr-2" /> Guardar cambios
+                  </Button>
                 </ul>
               </SortableContext>
             </DndContext>

@@ -13,7 +13,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Loader2, Plus } from "lucide-react";
+import { CassetteTape, Loader2, Plus } from "lucide-react";
 import {
   forwardRef,
   useEffect,
@@ -25,7 +25,7 @@ import {
 import type { Course } from "../../types/Course";
 import { CourseModuleCard } from "./course-module-card";
 import type { UseMutationResult } from "@tanstack/react-query";
-import type { UpdateOrderModulesValues } from "../../hooks/useUpdateOrderModules";
+import type { UpdateCourseModulesOrderValues } from "../../hooks/useUpdateCourseModulesOrder";
 import { useAddModule } from "../../hooks/useAddModule";
 import { useDeleteModule } from "../../hooks/useDeleteModule";
 
@@ -38,7 +38,7 @@ interface CourseModulesCardProps {
     Error,
     {
       id: string;
-      data: UpdateOrderModulesValues;
+      data: UpdateCourseModulesOrderValues;
     },
     unknown
   >;
@@ -74,17 +74,18 @@ const CourseModules = forwardRef(function CourseModulesCard(
     setCourse((prev) => {
       if (!prev) return prev;
       const newModules = arrayMove(prev.modules, oldIndex, newIndex);
-
-      setHasChanges(
-        JSON.stringify(newModules.map((m) => m.id)) !==
-          JSON.stringify(initialOrderRef.current)
-      );
-
       return {
         ...prev,
         modules: newModules,
       };
     });
+
+    const isChanged =
+      JSON.stringify(
+        arrayMove(course?.modules ?? [], oldIndex, newIndex).map((m) => m.id)
+      ) !== JSON.stringify(initialOrderRef.current);
+
+    setHasChanges(isChanged);
   };
 
   const handleAddModule = async () => {
@@ -196,7 +197,10 @@ const CourseModules = forwardRef(function CourseModulesCard(
           {updateOrderCourse.isPending ? (
             <Loader2 className="animate-spin" />
           ) : (
-            "Guardar Cambios"
+            <>
+              <CassetteTape className="h-4 w-4 mr-2" />
+              Guardar Cambios{" "}
+            </>
           )}
         </Button>
       </CardContent>

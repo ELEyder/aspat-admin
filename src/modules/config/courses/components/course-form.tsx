@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
-import { Ban, CheckCircle2, Loader2 } from "lucide-react";
+import { Ban, CassetteTape, CheckCircle2, Loader2 } from "lucide-react";
 
 import {
   Form,
@@ -254,7 +254,7 @@ export const CourseForm = forwardRef(function CourseForm(
         />
 
         <Button type="submit" className="w-full" disabled={loading || !isDirty}>
-          {loading ? <Loader2 className="animate-spin" /> : "Guardar Cambios"}
+          {loading ? <Loader2 className="animate-spin" /> : <><CassetteTape className="h-4 w-4 mr-2" />Guardar Cambios </>}
         </Button>
       </form>
     </Form>

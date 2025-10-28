@@ -3,11 +3,11 @@ import api from "@/lib/api";
 import { toast } from "sonner";
 import axios from "axios";
 
-export interface UpdateOrderModulesValues {
+export interface UpdateCourseModulesOrderValues {
   modules: { id: number; order: number }[];
 }
 
-export const useUpdateOrderModules = () => {
+export const useUpdateCourseModulesOrder = () => {
 
   return useMutation({
     mutationFn: async ({
@@ -15,10 +15,9 @@ export const useUpdateOrderModules = () => {
       data,
     }: {
       id: string;
-      data: UpdateOrderModulesValues;
+      data: UpdateCourseModulesOrderValues;
     }) => {
-      console.log(data);
-      const response = await api.put(`course-modules/${id}/order`, data);
+      const response = await api.patch(`course-modules/${id}/order`, data);
       return response.data;
     },
     onSuccess: () => {

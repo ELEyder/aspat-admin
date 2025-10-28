@@ -3,18 +3,18 @@ import { useParams } from "react-router-dom";
 import type { Course } from "../types/Course";
 import Loading from "@/components/loading";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, CassetteTape, Loader2 } from "lucide-react";
 
 import CourseCard from "../components/course-card/course-card";
 import CourseModules from "../components/course-card/course-modules";
 import { useUpdateCourse } from "../hooks/useUpdateCourse";
-import { useUpdateOrderModules } from "../hooks/useUpdateOrderModules";
+import { useUpdateCourseModulesOrder } from "../hooks/useUpdateCourseModulesOrder";
 import { useCourseDetails } from "@/modules/config/courses/hooks/useCourseDetails";
 
 const CourseDetailsConfigPage: FC = () => {
   const { id } = useParams();
   const { data, loading } = useCourseDetails(id);
-  const [course, setCourse] = useState<Course | null>(data ?? null);
+  const [course, setCourse] = useState<Course | null>(null);
   const [formDirty, setFormDirty] = useState(false);
   const [modulesDirty, setModulesDirty] = useState(false);
   const formRef = useRef<{ submit: () => Promise<void> }>(null);
@@ -22,7 +22,7 @@ const CourseDetailsConfigPage: FC = () => {
     submit: () => Promise<void>;
   }>(null);
   const updateCourse = useUpdateCourse();
-  const updateOrderCourse = useUpdateOrderModules();
+  const updateOrderCourse = useUpdateCourseModulesOrder();
 
   useEffect(() => {
     if (data) {
@@ -76,12 +76,12 @@ const CourseDetailsConfigPage: FC = () => {
               updateCourse.isPending ||
               updateOrderCourse.isPending
             }
-            className="w-35 absolute lg:relative right-0 mr-1 lg:mr-0"
+            className="absolute lg:relative right-0 mr-1 lg:mr-0"
           >
             {updateCourse.isPending ? (
               <Loader2 className="animate-spin" />
             ) : (
-              "Guardar cambios"
+              <><CassetteTape className="h-4 w-4 mr-2" />Guardar Cambios </>
             )}
           </Button>
         </div>
