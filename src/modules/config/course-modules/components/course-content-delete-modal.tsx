@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import type { FC } from "react";
 import { Button } from "@/components/ui/button";
-import type { CourseContent } from "../types/CourseContent";
+import type { CourseContent } from "../../course-contents/types/CourseContent";
 
 interface CourseContentDeleteModalProps {
   content: CourseContent;

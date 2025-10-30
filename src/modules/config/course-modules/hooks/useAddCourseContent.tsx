@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { toast } from "sonner";
 import axios from "axios";
-import type { CourseContent } from "../types/CourseContent";
+import type { CourseContent } from "../../course-contents/types/CourseContent";
 
 interface ApiResponse {
   message : string,

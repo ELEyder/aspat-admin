@@ -141,7 +141,12 @@ export const CourseModuleForm = forwardRef(function CourseForm(
         />
 
         <Button type="submit" className="w-full" disabled={loading || !isDirty}>
-          {loading ? <Loader2 className="animate-spin" /> : <><CassetteTape className="h-4 w-4 mr-2" />Guardar Cambios </>}
+          {loading ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            <CassetteTape />
+          )}
+          Guardar Cambios
         </Button>
       </form>
     </Form>

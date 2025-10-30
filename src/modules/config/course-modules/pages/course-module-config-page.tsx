@@ -24,7 +24,7 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import type { CourseContent } from "../types/CourseContent";
+import type { CourseContent } from "../../course-contents/types/CourseContent";
 import { useAddCourseContent } from "../hooks/useAddCourseContent";
 import { useUpdateCourseContentsOrder } from "../hooks/useUpdateCourseContentsOrder";
 
@@ -115,11 +115,9 @@ const CourseModuleConfigPage: FC = () => {
             {updateModule.isPending ? (
               <Loader2 className="animate-spin h-4 w-4 mr-2" />
             ) : (
-              <>
                 <CassetteTape className="h-4 w-4 mr-2" />
-                Guardar Cambios
-              </>
             )}
+            Guardar Cambios
           </Button>
         </div>
       </div>
@@ -175,8 +173,8 @@ const CourseModuleConfigPage: FC = () => {
                     Agregar contenido
                   </Button>
 
-                  <Button className="w-full" onClick={handleSaveOrder}>
-                    <CassetteTape className="h-4 w-4 mr-2" /> Guardar cambios
+                  <Button className="w-full" onClick={handleSaveOrder} disabled={updateContentsOrder.isPending}>
+                    {updateContentsOrder.isPending ? <Loader2 className="animate-spin"/> : <CassetteTape />} Guardar cambios
                   </Button>
                 </ul>
               </SortableContext>

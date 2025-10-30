@@ -1,4 +1,4 @@
-import type { CourseContent } from "./CourseContent";
+import type { CourseContent } from "../../course-contents/types/CourseContent";
 
 export interface CourseModule {
   id: number;

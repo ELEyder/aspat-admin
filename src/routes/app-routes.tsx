@@ -16,6 +16,7 @@ const CoursesConfigPage = lazy(() => import("@/modules/config/courses/pages/cour
 const CourseDetailsConfigPage = lazy(() => import("@/modules/config/courses/pages/course-details-config-page"));
 
 const ModulesConfigPage = lazy(() => import("@/modules/config/course-modules/pages/course-module-config-page"));
+const ContentConfigPage = lazy(() => import("@/modules/config/course-contents/pages/course-content-config-page"));
 
 const AppRoutes: FC = () => {
   return (
@@ -39,6 +40,9 @@ const AppRoutes: FC = () => {
           <Route path="/config/courses" element={<CoursesConfigPage />} />
           <Route path="/config/courses/:id" element={<CourseDetailsConfigPage />} />
           <Route path="/config/course-modules/:id" element={<ModulesConfigPage />} />
+          <Route path="/config/course-contents/:id" element={<ContentConfigPage />} />
+
+          <Route path="*" element={<HomePage />} />
         </Route>
       </Routes>
     </Suspense>

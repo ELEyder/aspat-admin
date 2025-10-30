@@ -18,8 +18,8 @@ export interface CourseContentTranslation {
   id: number;
   course_content_id: number;
   locale: string;
-  title: string | null;
-  content: string | null;
+  title: string;
+  content: string;
   created_at: string;
   updated_at: string;
 }

@@ -11,7 +11,7 @@ import QuizModal from "./quiz-modal/quiz-modal";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PptxViewer from "@/components/pptx-viewer";
-import type { CourseContent } from "../../course-modules/types/CourseContent";
+import type { CourseContent } from "../../course-contents/types/CourseContent";
 
 interface RenderContentProps {
   content: CourseContent;

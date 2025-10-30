@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
-import type { CourseContent } from "../types/CourseContent";
+import type { CourseContent } from "../../course-contents/types/CourseContent";
 import CourseContentDeleteModal from "./course-content-delete-modal";
 import { useDeleteCourseContent } from "../hooks/useDeleteCourseContent";
 import { useState } from "react";
@@ -20,7 +20,11 @@ interface CourseContentCard {
   setContents: React.Dispatch<React.SetStateAction<any>>;
 }
 
-export function CourseContentCard({ content, index, setContents }: CourseContentCard) {
+export function CourseContentCard({
+  content,
+  index,
+  setContents,
+}: CourseContentCard) {
   const navigate = useNavigate();
   const deleteContent = useDeleteCourseContent();
   const [openDelete, setOpenDelete] = useState(false);
@@ -49,6 +53,7 @@ export function CourseContentCard({ content, index, setContents }: CourseContent
           <p className="font-medium text-gray-800">
             {content.translations[0].title}
           </p>
+          <p>Tipo: {content.type}</p>
         </div>
       </div>
       <div className="flex gap-2">
@@ -60,7 +65,7 @@ export function CourseContentCard({ content, index, setContents }: CourseContent
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
             <DropdownMenuItem
-              onClick={() => navigate(`/config/course-modules/${content.id}`)}
+              onClick={() => navigate(`/config/course-contents/${content.id}`)}
             >
               <Edit /> Editar
             </DropdownMenuItem>
