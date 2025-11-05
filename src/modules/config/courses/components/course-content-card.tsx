@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { renderIcon } from "../libs/render-icon";
 import { toast } from "sonner";
 import { RenderContent } from "./render-content";
-import type { CourseContent } from "../types/Course";
 import MDEditor from "@uiw/react-md-editor";
+import type { CourseContent } from "../../course-contents/types/CourseContent";
 
 interface CourseContentCardProps {
   content: CourseContent;

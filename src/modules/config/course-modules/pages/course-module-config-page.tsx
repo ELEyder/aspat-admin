@@ -31,11 +31,12 @@ import { useUpdateCourseContentsOrder } from "../hooks/useUpdateCourseContentsOr
 const CourseModuleConfigPage: FC = () => {
   const { id } = useParams();
   const { data: module, isLoading } = useCourseMoule(id ?? "");
+  const [contents, setContents] = useState<CourseContent[]>([]);
   const updateModule = useUpdateCourseModule();
   const updateContentsOrder = useUpdateCourseContentsOrder();
   const sensors = useSensors(useSensor(PointerSensor));
   const addContent = useAddCourseContent();
-  const [contents, setContents] = useState<CourseContent[]>([]);
+  const [isDirty, setIsDirty] = useState<boolean>(false);
   const translations = module?.translations ?? [];
 
   useEffect(() => {
@@ -66,6 +67,7 @@ const CourseModuleConfigPage: FC = () => {
       const newIndex = contents.findIndex((c) => c.id === over.id);
       const newContents = arrayMove(contents, oldIndex, newIndex);
       setContents(newContents);
+      setIsDirty(true);
     }
   };
 
@@ -74,7 +76,7 @@ const CourseModuleConfigPage: FC = () => {
       course_module_id: module.id,
       created_at: "",
       order: contents.length + 1,
-      type: "page",
+      type: "default",
       url: "",
       id: 0,
       updated_at: "",

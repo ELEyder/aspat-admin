@@ -3,6 +3,7 @@ import api from "@/lib/api";
 import { toast } from "sonner";
 import axios from "axios";
 import type { CourseContentFormValues } from "../components/course-content-form";
+import { objectToFormData } from "@/utils/objectToFormData";
 
 export const useUpdateCourseContent = () => {
   const queryClient = useQueryClient();
@@ -15,8 +16,9 @@ export const useUpdateCourseContent = () => {
       id: string;
       data: CourseContentFormValues;
     }) => {
-      console.log(data)
-      const response = await api.put(`course-contents/${id}`, data);
+      const formData = objectToFormData(data);
+      console.log([...formData.entries()]);
+      const response = await api.post(`course-contents/${id}`, formData);
       return response.data;
     },
     onSuccess: (data, { id }) => {

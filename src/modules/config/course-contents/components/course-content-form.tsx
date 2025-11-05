@@ -78,7 +78,6 @@ export const CourseContentForm = forwardRef(function CourseForm(
   useEffect(() => {
     if (Object.keys(form.formState.errors).length > 0) {
       toast.error("Por favor, corrige los errores en el formulario.");
-      console.log(form.formState.errors);
     }
   }, [form.formState.errors]);
 
@@ -171,10 +170,12 @@ export const CourseContentForm = forwardRef(function CourseForm(
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="page">Página</SelectItem>
+                  <SelectItem value="default">Por Defecto</SelectItem>
                   <SelectItem value="pdf">PDF</SelectItem>
                   <SelectItem value="ppt">PPT</SelectItem>
                   <SelectItem value="video">Video</SelectItem>
+                  <SelectItem value="forum">Foro</SelectItem>
+                  <SelectItem value="quiz">Quiz</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -182,7 +183,7 @@ export const CourseContentForm = forwardRef(function CourseForm(
           )}
         />
         {type === "video" && (
-          <div>
+          <>
             <FormField
               control={form.control}
               name="url"
@@ -216,7 +217,7 @@ export const CourseContentForm = forwardRef(function CourseForm(
                 />
               </div>
             )}
-          </div>
+          </>
         )}
         {type === "pdf" && (
           <>
@@ -232,12 +233,18 @@ export const CourseContentForm = forwardRef(function CourseForm(
                       accept=".pdf"
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const file = e.target.files?.[0];
-                        field.onChange(file);
-                        if (file) {
-                          const previewUrl = URL.createObjectURL(file);
-                          setUrlContent(previewUrl);
-                          console.log(previewUrl);
+                        if (!file) return;
+
+                        if (file.type !== "application/pdf") {
+                          toast.error("Solo se permiten archivos PDF (.pdf)");
+                          e.target.value = "";
+                          return;
                         }
+
+                        field.onChange(file);
+                        const previewUrl = URL.createObjectURL(file);
+                        setUrlContent(previewUrl);
+                        setIsDirty(true);
                       }}
                     />
                   </FormControl>
@@ -267,31 +274,44 @@ export const CourseContentForm = forwardRef(function CourseForm(
                         accept=".ppt, .pptx"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                           const file = e.target.files?.[0];
-                          field.onChange(file);
-                          if (file) {
-                            const previewUrl = URL.createObjectURL(file);
-                            setUrlContent(previewUrl);
-                            console.log(previewUrl);
+                          if (!file) return;
+
+                          const validExtensions = [
+                            "application/vnd.ms-powerpoint",
+                            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                          ];
+                          if (!validExtensions.includes(file.type)) {
+                            toast.error(
+                              "Solo se permiten archivos .ppt o .pptx"
+                            );
+                            e.target.value = "";
+                            return;
                           }
+
+                          field.onChange(file);
+                          const previewUrl = URL.createObjectURL(file);
+                          setUrlContent(previewUrl);
+                          setIsDirty(true);
                         }}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                   {urlContent.includes("https") ? (
-                    <PptxViewer signedUrl={urlContent}/>
-                  ) : 
-                  (
+                    <div className="w-full aspect-video">
+                      <PptxViewer signedUrl={urlContent} />
+                    </div>
+                  ) : (
                     <div className="flex flex-col items-center justify-center border rounded-lg p-6 bg-gray-50">
                       <p className="text-gray-600 text-sm mb-2">
-                        No es posible previsualizar un archivo PPT local.
+                        No es posible previsualizar un archivo PPT local. Se
+                        podrá visualizar una vez esté subida al servidor
                       </p>
                       <p className="text-gray-800 font-medium">
                         {field.value?.name}
                       </p>
                     </div>
-                  )
-                  }
+                  )}
                 </>
               )}
             />

@@ -34,9 +34,9 @@ const CourseContentConfigPage: FC = () => {
           <h2 className="font-semibold text-lg">{translations[0]?.title}</h2>
           <Button
             onClick={() => console.log(content)}
-            className="w-36 lg:w-auto"
+            className="w-36 lg:w-auto invisible"
             disabled={updateContent.isPending}
-          >
+>
             {updateContent.isPending ? (
               <Loader2 className="animate-spin" />
             ) : (
