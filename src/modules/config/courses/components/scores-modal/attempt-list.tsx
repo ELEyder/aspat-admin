@@ -43,7 +43,7 @@ const AttemptList: FC<AttemptListProps> = ({ attempts }) => {
 
               <div className="text-right">
                 <span className={`text-2xl font-extrabold ${passed ? "text-green-700" : "text-red-700"}`}>
-                  {attempt.score}
+                  {attempt.points}
                 </span>
                 <span className="text-sm font-semibold text-gray-500"> / 20 puntos</span>
               </div>

@@ -1,12 +1,12 @@
 import type { FC } from "react";
 import type { Quiz } from "../../types/Quiz";
 
-interface ScoreHeaderProps {
+interface PointsHeaderProps {
   quiz: Quiz;
   hasPassed: boolean;
 }
 
-const ScoreHeader: FC<ScoreHeaderProps> = ({ quiz, hasPassed }) => {
+const PointsHeader: FC<PointsHeaderProps> = ({ quiz, hasPassed }) => {
   const icon = hasPassed ? "🏆" : "📚";
   const titleColor = hasPassed ? "text-green-600" : "text-indigo-600";
 
@@ -31,4 +31,4 @@ const ScoreHeader: FC<ScoreHeaderProps> = ({ quiz, hasPassed }) => {
   );
 };
 
-export default ScoreHeader;
+export default PointsHeader;

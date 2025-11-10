@@ -9,7 +9,7 @@ export interface Quiz {
   updated_at: string;
   max_attempts : number;
   user_attempts : number;
-  score : number | null;
+  points : number | null;
   attempts : QuizAttempt[];
   translations: QuizTranslation[];
   questions: QuizQuestion[];

@@ -4,6 +4,7 @@ import { Suspense, lazy } from "react";
 import { PrivateRoute } from "@/components/private-route";
 import LoadingPage from "@/pages/loading-page";
 import Layout from "@/layouts/layout";
+import SurveyResponsesPage from "@/modules/survey/pages/survey-response-page";
 
 const HomePage = lazy(() => import("../modules/home/pages/home-page"));
 
@@ -41,6 +42,7 @@ const AppRoutes: FC = () => {
           <Route path="/config/courses/:id" element={<CourseDetailsConfigPage />} />
           <Route path="/config/course-modules/:id" element={<ModulesConfigPage />} />
           <Route path="/config/course-contents/:id" element={<ContentConfigPage />} />
+          <Route path="/survey" element={<SurveyResponsesPage />} />
 
           <Route path="*" element={<HomePage />} />
         </Route>

@@ -7,6 +7,7 @@ import {
   Inbox,
   LogOut,
   Settings,
+  Star,
   StoreIcon,
   User2,
 } from "lucide-react";
@@ -50,7 +51,7 @@ export function AppSidebar() {
       url: "/",
       icon: Home,
     },
-        {
+    {
       title: "Donaciones",
       url: "/donations",
       icon: HeartPlus,
@@ -72,6 +73,11 @@ export function AppSidebar() {
         { title: "Roles", url: "/config/roles" },
         { title: "Permisos", url: "/config/permisos" },
       ],
+    },
+        {
+      title: "Valoraciones",
+      url: "/survey",
+      icon: Star,
     },
     {
       title: "Cerrar Sesión",
@@ -196,7 +202,7 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
-      <CloseSesionModal open={open} setOpen={setOpen}/>
+      <CloseSesionModal open={open} setOpen={setOpen} />
     </Sidebar>
   );
 }

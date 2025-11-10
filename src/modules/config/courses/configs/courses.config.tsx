@@ -14,7 +14,12 @@ import { useNavigate } from "react-router-dom";
 import CourseDeleteModal from "../components/course-delete-modal";
 import { useState } from "react";
 import CourseDuplicateModal from "../components/course-duplicate-modal";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const columns: ColumnDef<Course>[] = [
   {
@@ -28,14 +33,14 @@ export const columns: ColumnDef<Course>[] = [
     header: "ID",
   },
   {
-    id: "slug",
-    accessorKey: "slug",
-    header: "Identificador de URL",
-  },
-  {
     id: "title",
     accessorKey: "translations.0.title",
     header: "Curso",
+  },
+  {
+    id: "slug",
+    accessorKey: "slug",
+    header: "Identificador de URL",
   },
   {
     id: "is_active",
@@ -69,31 +74,31 @@ export const columns: ColumnDef<Course>[] = [
       return (
         <div className="flex gap-2">
           <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <MoreVertical className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm">
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
 
-              <DropdownMenuContent align="end" className="w-40">
-                <DropdownMenuItem onClick={() => navigate("/config/courses/" + request.id)}>
-                  <Pencil className="h-4 w-4" /> Editar
-                </DropdownMenuItem>
+            <DropdownMenuContent align="end" className="w-40">
+              <DropdownMenuItem
+                onClick={() => navigate("/config/courses/" + request.id)}
+              >
+                <Pencil className="h-4 w-4" /> Editar
+              </DropdownMenuItem>
 
-                <DropdownMenuItem
-                  onClick={() => setOpenDuplicate(true)}
-                >
-                  <Copy className="h-4 w-4" /> Duplicar
-                </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setOpenDuplicate(true)}>
+                <Copy className="h-4 w-4" /> Duplicar
+              </DropdownMenuItem>
 
-                <DropdownMenuItem
-                  onClick={() => setOpenDelete(true)}
-                  className="text-red-600 bg-red-50"
-                >
-                  <Trash2 className="h-4 w-4" /> Eliminar
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              <DropdownMenuItem
+                onClick={() => setOpenDelete(true)}
+                className="text-red-600 bg-red-50"
+              >
+                <Trash2 className="h-4 w-4" /> Eliminar
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <CourseDuplicateModal
             course={request}
             open={openDuplicate}
