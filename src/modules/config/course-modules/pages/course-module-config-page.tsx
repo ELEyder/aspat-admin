@@ -112,7 +112,7 @@ const CourseModuleConfigPage: FC = () => {
           <Button
             onClick={() => console.log(module)}
             className="w-36 lg:w-auto"
-            disabled={updateModule.isPending}
+            disabled={updateModule.isPending || !isDirty}
           >
             {updateModule.isPending ? (
               <Loader2 className="animate-spin h-4 w-4 mr-2" />

@@ -1,8 +1,8 @@
 import { type Dispatch, type FC, type SetStateAction } from "react";
-import PointsHeader from "./pointss-header";
 import AttemptList from "./attempt-list";
 import type { Quiz } from "../../types/Quiz";
 import DefaultModal from "@/components/default-modal";
+import PointsHeader from "./scores-header";
 
 interface PointssProps {
   open: boolean;
