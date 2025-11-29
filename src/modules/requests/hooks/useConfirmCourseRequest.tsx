@@ -1,24 +1,32 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/api";
+import { toast } from "sonner";
+import type { AxiosError } from "axios";
 
-interface ConfirmResponse {
+interface ApiResponse {
   message: string;
-  success: boolean;
+}
+
+interface FormData {
+    course_id: string,
+    group_id: string,
+    user_id: string,
 }
 
 export const useConfirmCourseRequest = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id: string): Promise<ConfirmResponse> => {
-      const response = await api.patch<ConfirmResponse>(`requests/courses/${id}/confirm`);
+    mutationFn: async (FormData : FormData): Promise<ApiResponse> => {
+      const response = await api.post<ApiResponse>(`enrollment`, FormData);
       return response.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["course-requests"] });
+      toast.success("Solicitud confirmada y usuario matriculado exitosamente.");
     },
-    onError: (error) => {
-      console.error("Error al confirmar solicitud:", error);
+    onError: (error : AxiosError<ApiResponse>) => {
+      toast.error(error.response?.data?.message ?? "Error al confirmar solicitud y matricular al usuario:");
     },
   });
 };
