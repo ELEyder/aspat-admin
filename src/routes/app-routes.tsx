@@ -12,6 +12,7 @@ const DonationRequestsPage = lazy(() => import("@/modules/donations/pages/donati
 
 const ServiceRequestsPage = lazy(() => import("@/modules/requests/pages/service-requests-page"));
 const CourseRequestsPage = lazy(() => import("@/modules/requests/pages/course-requests-page"));
+const ContributorRequestsPage = lazy(() => import("@/modules/requests/pages/contributor-requests-page"));
 
 const CoursesConfigPage = lazy(() => import("@/modules/config/courses/pages/courses-config-page"));
 const CourseDetailsConfigPage = lazy(() => import("@/modules/config/courses/pages/course-details-config-page"));
@@ -37,6 +38,7 @@ const AppRoutes: FC = () => {
 
           <Route path="/requests/services" element={<ServiceRequestsPage />} />
           <Route path="/requests/courses" element={<CourseRequestsPage />} />
+          <Route path="/requests/contributors" element={<ContributorRequestsPage />} />
 
           <Route path="/config/courses" element={<CoursesConfigPage />} />
           <Route path="/config/courses/:id" element={<CourseDetailsConfigPage />} />

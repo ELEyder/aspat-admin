@@ -62,6 +62,7 @@ export function AppSidebar() {
       children: [
         { title: "Servicios", url: "/requests/services" },
         { title: "Cursos", url: "/requests/courses" },
+        { title: "Contribuyentes", url: "/requests/contributors" },
       ],
     },
     {
