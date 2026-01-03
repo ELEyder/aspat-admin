@@ -1,7 +1,6 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import {  Eye, MoreVertical, Trash2 } from "lucide-react";
-import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,11 +31,7 @@ export const columns: ColumnDef<ContributorRequest>[] = [
   },
   {
     header: "Opciones",
-    cell: ({ row }) => {
-      const request = row.original;
-      const [openConfirm, setOpenConfirm] = useState(false);
-      const [openDelete, setOpenDelete] = useState(false);
-      const [openView, setOpenView] = useState(false);
+    cell: () => {
 
       return (
         <>
@@ -49,13 +44,13 @@ export const columns: ColumnDef<ContributorRequest>[] = [
               </DropdownMenuTrigger>
 
               <DropdownMenuContent align="end" className="w-40">
-                <DropdownMenuItem onClick={() => setOpenView(true)}>
+                <DropdownMenuItem onClick={() => console.log(true)}>
                   <Eye className="mr-2 h-4 w-4" /> Ver solicitud
                 </DropdownMenuItem>
 
                 
                 <DropdownMenuItem
-                  onClick={() => setOpenDelete(true)}
+                  onClick={() => console.log(true)}
                   className="text-red-600 bg-red-50"
                 >
                   <Trash2 className="mr-2 h-4 w-4" /> Eliminar

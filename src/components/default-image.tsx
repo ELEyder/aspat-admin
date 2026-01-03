@@ -18,7 +18,9 @@ const DefaultImage: FC<DefaultImageProps> = ({
   return (
     <>
       {!loaded && (
-        <div className={`${className} flex items-center justify-center w-full h-full bg-gray-300 rounded`}>
+        <div
+          className={`${className} flex items-center justify-center w-full h-full bg-gray-300 rounded`}
+        >
           <Loader2Icon className="w-10 h-10 animate-spin" />
         </div>
       )}
@@ -29,15 +31,26 @@ const DefaultImage: FC<DefaultImageProps> = ({
         loading="lazy"
         onLoad={() => setLoaded(true)}
         onClick={() => isZoom && setZoom(true)}
-        className={`${className} transition-all duration-500 ${loaded ? "blur-0" : "blur-md scale-105 grayscale"}`}
+        className={`
+          ${className}
+          transition-all duration-500
+          ${
+            loaded
+              ? "opacity-100 blur-0"
+              : "opacity-0 blur-md scale-105 grayscale"
+          }
+        `}
       />
-
       {zoom && isZoom && (
         <div
           className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center p-4"
           onClick={() => setZoom(false)}
         >
-          <img src={src} alt="Vista ampliada" className="w-full h-full object-contain cursor-zoom-out" />
+          <img
+            src={src}
+            alt="Vista ampliada"
+            className="w-full h-full object-contain cursor-zoom-out"
+          />
         </div>
       )}
     </>

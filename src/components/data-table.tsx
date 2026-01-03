@@ -22,7 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import {
   Select,
@@ -35,11 +35,13 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  loading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  loading = false,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [selectedColumn, setSelectedColumn] = useState<string>(
@@ -47,7 +49,8 @@ export function DataTable<TData, TValue>({
   );
   const [filterValue, setFilterValue] = useState("");
 
-  const colHeader = columns.find(col => col.id === selectedColumn)?.header ?? "";
+  const colHeader =
+    columns.find((col) => col.id === selectedColumn)?.header ?? "";
 
   const table = useReactTable({
     data,
@@ -59,7 +62,6 @@ export function DataTable<TData, TValue>({
   });
 
   const handleFilterChange = (value: string) => {
-
     setFilterValue(value);
     if (!selectedColumn) return;
 
@@ -83,16 +85,20 @@ export function DataTable<TData, TValue>({
               .filter((col) => col.id)
               .map((col) => {
                 return (
-                <SelectItem key={col.id} value={col.id ?? "id"}>
-                  {col.header as string}
-                </SelectItem>
-              )
+                  <SelectItem key={col.id} value={col.id ?? "id"}>
+                    {col.header as string}
+                  </SelectItem>
+                );
               })}
           </SelectContent>
         </Select>
 
         <Input
-          placeholder={selectedColumn ? `Filtrar por "${colHeader}"` : "Selecciona una columna"}
+          placeholder={
+            selectedColumn
+              ? `Filtrar por "${colHeader}"`
+              : "Selecciona una columna"
+          }
           value={filterValue}
           onChange={(e) => handleFilterChange(e.target.value)}
           className="max-w-sm"
@@ -141,7 +147,15 @@ export function DataTable<TData, TValue>({
         </TableHeader>
 
         <TableBody>
-          {table.getRowModel().rows.length ? (
+          {loading ? (
+            <TableRow className="p-2 w-full">
+              <TableCell colSpan={columns.length}>
+                <div className="w-full flex justify-center p-5">
+                  <LoaderCircle className="animate-spin" />
+                </div>
+              </TableCell>
+            </TableRow>
+          ) : table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (

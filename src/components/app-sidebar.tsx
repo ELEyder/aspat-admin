@@ -1,12 +1,17 @@
 import {
+  Calendar,
   ChevronDown,
   ChevronUp,
+  HandHelping,
   HeartPlus,
   Home,
   IdCard,
   Inbox,
+  Languages,
   LogOut,
+  Palette,
   Settings,
+  SquareCode,
   Star,
   StoreIcon,
   User2,
@@ -57,14 +62,29 @@ export function AppSidebar() {
       icon: HeartPlus,
     },
     {
+      title: "Eventos",
+      url: "/events",
+      icon: Calendar,
+    },
+
+    {
+      title: "Sitio web",
+      icon: SquareCode,
+      children: [
+        { title: "Colores", url: "/website/colors", icon: Palette },
+        { title: "Contenidos", url: "/website/contents", icon: Languages },
+      ],
+    },
+    {
       title: "Solicitudes",
       icon: Inbox,
       children: [
-        { title: "Servicios", url: "/requests/services" },
+        { title: "Servicios", url: "/requests/services", icon: HandHelping },
         { title: "Cursos", url: "/requests/courses" },
         { title: "Contribuyentes", url: "/requests/contributors" },
       ],
     },
+
     {
       title: "Configuración",
       icon: Settings,
@@ -75,7 +95,7 @@ export function AppSidebar() {
         { title: "Permisos", url: "/config/permisos" },
       ],
     },
-        {
+    {
       title: "Valoraciones",
       url: "/survey",
       icon: Star,
@@ -130,7 +150,7 @@ export function AppSidebar() {
                                       : ""
                                   }
                                 >
-                                  <Link to={sub.url}>{sub.title}</Link>
+                                  <Link to={sub.url}>{sub.icon && <sub.icon />} {sub.title}</Link>
                                 </SidebarMenuButton>
                               </SidebarMenuItem>
                             );

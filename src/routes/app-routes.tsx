@@ -5,8 +5,12 @@ import { PrivateRoute } from "@/components/private-route";
 import LoadingPage from "@/pages/loading-page";
 import Layout from "@/layouts/layout";
 import SurveyResponsesPage from "@/modules/survey/pages/survey-response-page";
+import ColorsPage from "@/modules/website/colors/pages/colors-page";
 
 const HomePage = lazy(() => import("../modules/home/pages/home-page"));
+
+const EventsPage = lazy(() => import("@/modules/events/pages/events-page"));
+const EventPage = lazy(() => import("@/modules/events/pages/event-page"));
 
 const DonationRequestsPage = lazy(() => import("@/modules/donations/pages/donation-page"));
 
@@ -35,6 +39,11 @@ const AppRoutes: FC = () => {
           <Route index element={<HomePage />} />
 
           <Route path="/donations" element={<DonationRequestsPage />} />
+
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/events/:id" element={<EventPage />} />
+
+          <Route path="/website/colors" element={<ColorsPage />} />
 
           <Route path="/requests/services" element={<ServiceRequestsPage />} />
           <Route path="/requests/courses" element={<CourseRequestsPage />} />

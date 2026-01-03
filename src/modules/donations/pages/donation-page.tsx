@@ -4,7 +4,6 @@ import { useDontations } from "../hooks/useDontations";
 
 export default function DonationsPage() {
   const { data } = useDontations(1,10);
-  console.log(data)
   
   return (
     <div className="p-8">

@@ -1,4 +1,3 @@
-// src/data/columns/donation-columns.tsx
 import { type ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import {

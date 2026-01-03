@@ -3,12 +3,12 @@ import { columns } from "../configs/course-requests.config";
 import { useContributorRequests } from "../hooks/useContributorRequest";
 
 export default function ContributorRequestsPage() {
-  const { data } = useContributorRequests(1, 20);
+  const { data, loading } = useContributorRequests(1, 20);
 
   return (
     <div className="p-8">
       <h1 className="text-xl font-bold mb-4">Contribuyentes Solicitados</h1>
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={data} loading={loading} />
     </div>
   );
 }
