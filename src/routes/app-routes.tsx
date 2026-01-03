@@ -6,6 +6,7 @@ import LoadingPage from "@/pages/loading-page";
 import Layout from "@/layouts/layout";
 import SurveyResponsesPage from "@/modules/survey/pages/survey-response-page";
 import ColorsPage from "@/modules/website/colors/pages/colors-page";
+import ContentsPage from "@/modules/website/contents/pages/contents-page";
 
 const HomePage = lazy(() => import("../modules/home/pages/home-page"));
 
@@ -44,6 +45,7 @@ const AppRoutes: FC = () => {
           <Route path="/events/:id" element={<EventPage />} />
 
           <Route path="/website/colors" element={<ColorsPage />} />
+          <Route path="/website/contents" element={<ContentsPage />} />
 
           <Route path="/requests/services" element={<ServiceRequestsPage />} />
           <Route path="/requests/courses" element={<CourseRequestsPage />} />

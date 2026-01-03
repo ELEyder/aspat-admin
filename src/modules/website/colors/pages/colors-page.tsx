@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { ColorRow } from "../components/ColorRow";
 import { Button } from "@/components/ui/button";
 import { useUpdateColors } from "../hooks/useUpdateColors";
-import { Loader2, CassetteTape, TimerReset } from "lucide-react";
+import { Loader2, CassetteTape, TimerReset, Eye } from "lucide-react";
 import { useResetColors } from "../hooks/useResetColors";
 import Loading from "@/components/loading";
 
@@ -41,37 +41,61 @@ export default function ColorsPage() {
   }
 
   return (
-    <div className="p-8 flex space-x-4 flex-1 max-h-screen">
-      <div className="flex flex-col">
-        <h1 className="text-xl font-bold mb-4 w-max">Colores</h1>
-        <div className="flex flex-col space-y-4 overflow-y-scroll h-full">
-          {colors?.map((color, index) => (
-            <ColorRow key={color.id} defaultColor={defaultColors?.[index]?.value} color={color} onUpdate={handleUpdate} />
-          ))}
-        </div>
-      </div>
-      <div className="w-full flex flex-col space-y-4">
-        <Button disabled={isPending || isResetting} onClick={handleClick}>
+    <div className="flex flex-col h-dvh">
+      <div className="sticky top-0 p-6 flex space-x-4 z-10 w-full bg-gray-100">
+        <Button
+          className="flex-1"
+          disabled={isPending || isResetting}
+          onClick={handleClick}
+        >
           {isPending ? <Loader2 className="animate-spin" /> : <CassetteTape />}{" "}
           Actualizar Colores
         </Button>
-        <Button variant={"destructive"} disabled={isResetting || isPending} onClick={handleClickReset}>
-          {isResetting ? (
-            <Loader2 className="animate-spin" />
-          ) : (
-            <TimerReset />
-          )}
+        <Button
+          className="flex-1"
+          variant={"destructive"}
+          disabled={isResetting || isPending}
+          onClick={handleClickReset}
+        >
+          {isResetting ? <Loader2 className="animate-spin" /> : <TimerReset />}
           Reiniciar colores
         </Button>
-        <iframe
-          key={reload}
-          src={
-            import.meta.env.PROD
-              ? "https://aspatperu.org.pe"
-              : "http://localhost:5173"
-          }
-          className="aspect-video"
-        />
+      </div>
+      <div className="flex space-x-4 space-y-4 flex-row p-6 flex-1 min-h-0">
+        <div className="flex flex-col space-y-4 overflow-y-scroll">
+          {colors?.map((color, index) => (
+            <ColorRow
+              key={color.id}
+              defaultColor={defaultColors?.[index]?.value}
+              color={color}
+              onUpdate={handleUpdate}
+            />
+          ))}
+        </div>
+        <div className="w-full flex-col space-y-4 flex-1 hidden xl:flex">
+          <iframe
+            key={reload}
+            src={
+              import.meta.env.PROD
+                ? "https://aspatperu.org.pe"
+                : "http://localhost:5173"
+            }
+            className="h-full"
+          />
+        </div>
+        <div className="w-full items-center justify-center flex-1 xl:hidden flex">
+          <a
+            href={
+              import.meta.env.PROD
+                ? "https://aspatperu.org.pe"
+                : "http://localhost:5173"
+            }
+            target="_blank"
+            className="flex underline decoration-3"
+          >
+            <Eye className="mr-2" /> Vista previa
+          </a>
+        </div>
       </div>
     </div>
   );
