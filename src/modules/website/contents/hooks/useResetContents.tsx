@@ -2,23 +2,22 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { toast } from "sonner";
 import axios from "axios";
-import type { Color } from "./useColors";
 
-export const useUpdateColors = () => {
+export const useResetContents = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: Color[]) => {
-      const response = await api.put(`colors`, {colors : data});
+    mutationFn: async () => {
+      const response = await api.post(`contents/reset`);
       return response.data;
     },
     onSuccess: (data) => {
-      toast.success(data.message || "Colores actualizados correctamente");
-      queryClient.invalidateQueries({ queryKey: ["colors"] });
+      toast.success(data.message || "Contenido restablecidos correctamente");
+      queryClient.invalidateQueries({ queryKey: ["contents"] });
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.message ?? "Error al actualizar los colores");
+        toast.error(error.response?.data?.message ?? "Error al restablecer los contenidos");
       } else {
         toast.error("Error inesperado");
       }
