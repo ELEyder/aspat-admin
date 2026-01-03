@@ -68,7 +68,7 @@ export default function ColorsPage() {
           src={
             import.meta.env.PROD
               ? "https://aspatperu.org.pe"
-              : "http://localhost:5173/courses"
+              : "http://localhost:5173"
           }
           className="aspect-video"
         />
