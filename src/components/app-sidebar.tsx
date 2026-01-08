@@ -1,4 +1,5 @@
 import {
+  AppWindow,
   Calendar,
   ChevronDown,
   ChevronUp,
@@ -73,6 +74,7 @@ export function AppSidebar() {
       children: [
         { title: "Colores", url: "/website/colors", icon: Palette },
         { title: "Contenidos", url: "/website/contents", icon: Languages },
+        { title: "Secciones", url: "/website/sections", icon: AppWindow },
       ],
     },
     {
