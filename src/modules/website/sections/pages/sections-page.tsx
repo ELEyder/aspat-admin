@@ -5,7 +5,6 @@ import { useUpdateContents as useUpdateSections } from "../hooks/useUpdateSectio
 import {
   Loader2,
   CassetteTape,
-  TimerReset,
   Eye,
   Languages,
 } from "lucide-react";
@@ -19,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import ResetButton from "../components/ResetButton";
 
 export default function SectionsPage() {
   const { data } = useSections();
@@ -91,22 +91,14 @@ export default function SectionsPage() {
           {isResetting ? <Loader2 className="animate-spin" /> : <Languages />}
           Cambiar idioma ({languageLocal.toUpperCase()})
         </Button>
-        <Button
-          className="flex-1"
-          variant={"destructive"}
-          disabled={isResetting || isPending}
-          onClick={handleClickReset}
-        >
-          {isResetting ? <Loader2 className="animate-spin" /> : <TimerReset />}
-          Reiniciar contenido
-        </Button>
+        <ResetButton disabled={isResetting || isPending} onClick={handleClickReset} isResetting={isResetting} />
       </div>
-      <div className="flex space-x-4 space-y-4 flex-row p-6 flex-1 min-h-0">
-        <div className="flex flex-col space-y-2 overflow-y-scroll flex-1">
-          <div className="top-0 sticky bg-gray-50 p-2 w-full space-y-2 rounded-md z-100">
+      <div className="flex space-x-4 space-y-4 flex-row flex-1 min-h-0">
+        <div className="flex flex-col space-y-2 overflow-y-scroll flex-1 m-0">
+          <div className="top-0 sticky bg-gray-50 p-6 m-0 w-full space-y-2 z-2">
             <p className="w-max font-bold">Buscar Contenido</p>
             <Select value={sectionCategory} onValueChange={setSectionCategory}>
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Selecciona una categoría" />
               </SelectTrigger>
 
@@ -119,16 +111,19 @@ export default function SectionsPage() {
               </SelectContent>
             </Select>
           </div>
-
-          {visibleSections.map((sections) => (
-            <SectionRow
-              key={sections.id}
-              section={sections}
-              onUpdate={handleUpdate}
-            />
-          ))}
+          <div className="flex flex-col gap-4 p-6">
+            {visibleSections.map((sections) => (
+              <>
+                <SectionRow
+                  key={sections.id}
+                  section={sections}
+                  onUpdate={handleUpdate}
+                />
+              </>
+            ))}
+          </div>
         </div>
-        <div className="w-full flex-col space-y-4 flex-1 hidden xl:flex">
+        <div className="w-full flex-col space-y-4 flex-1 hidden xl:flex p-6">
           <iframe
             ref={iframeRef}
             src={
