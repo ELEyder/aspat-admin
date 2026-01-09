@@ -7,7 +7,7 @@ import {
   Languages,
 } from "lucide-react";
 import Loading from "@/components/loading";
-import { useSections, type PageSection } from "../hooks/useSections";
+import { useImages, type WebsiteImage } from "../hooks/useImages";
 import {
   Select,
   SelectContent,
@@ -15,35 +15,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import ResetButton from "../../images/components/ResetButton";
-import { SectionRow } from "../components/SectionRow";
-import { useUpdateSections } from "../hooks/useUpdateSections";
-import { useResetSections } from "../hooks/useResetSections";
+import { ImageRow } from "../components/ImageRow";
+import { useUpdateImages } from "../hooks/useUpdateImages";
 
-export default function SectionsPage() {
-  const { data } = useSections();
+export default function ImagesPage() {
+  const { data } = useImages();
   const [languageLocal, setLanguageLocal] = useState("es");
-  const { mutateAsync: updateContents, isPending } = useUpdateSections();
-  const { mutateAsync: resetSections, isPending: isResetting } =
-    useResetSections();
-  const [sections, setSections] = useState<PageSection[] | null>(null);
+  const { mutateAsync: updateContents, isPending } = useUpdateImages();
+
+  const [images, setImages] = useState<WebsiteImage[] | null>(null);
   const [sectionCategory, setSectionCategory] = useState("");
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     if (!data) return;
-    setSections(data);
+    setImages(data);
   }, [data]);
 
-  const handleUpdate = (newSection: PageSection) => {
-    setSections((prev) => {
+  const handleUpdate = (newSection: WebsiteImage) => {
+    setImages((prev) => {
       if (!prev) return prev;
       return prev.map((s) => (s.id === newSection.id ? newSection : s));
     });
   };
 
   const handleClick = async () => {
-    await updateContents(sections ?? []);
+    await updateContents(images ?? []);
     iframeRef.current?.contentWindow?.postMessage("reload", "*");
   };
 
@@ -51,22 +48,18 @@ export default function SectionsPage() {
     setLanguageLocal((prev) => (prev === "es" ? "en" : "es"));
   };
 
-  const handleClickReset = async () => {
-    await resetSections();
-    iframeRef.current?.contentWindow?.postMessage("reload", "*");
-  };
 
-  if (!sections) {
+  if (!images) {
     return <Loading />;
   }
 
   const categories = Array.from(
-    new Set(sections.map((c) => c.page_key).filter(Boolean))
+    new Set(images.map((c) => c.section_category).filter(Boolean))
   );
 
-  const visibleSections = sections.filter((c) => {
+  const visibleImages = images.filter((c) => {
     if (c.locale !== languageLocal) return false;
-    if (c.page_key !== sectionCategory) return false;
+    if (c.section_category !== sectionCategory) return false;
 
     return true;
   });
@@ -76,7 +69,7 @@ export default function SectionsPage() {
       <div className="sticky top-0 p-6 flex space-x-4 z-10 w-full bg-gray-100">
         <Button
           className="flex-1"
-          disabled={isPending || isResetting}
+          disabled={isPending}
           onClick={handleClick}
         >
           {isPending ? <Loader2 className="animate-spin" /> : <CassetteTape />}{" "}
@@ -85,18 +78,17 @@ export default function SectionsPage() {
         <Button
           className="flex-1"
           variant={"outline"}
-          disabled={isResetting || isPending}
+          disabled={isPending}
           onClick={handleClickLanguage}
         >
-          {isResetting ? <Loader2 className="animate-spin" /> : <Languages />}
+          <Languages />
           Cambiar idioma ({languageLocal.toUpperCase()})
         </Button>
-        <ResetButton disabled={isResetting || isPending} onClick={handleClickReset} isResetting={isResetting} />
       </div>
       <div className="flex space-x-4 space-y-4 flex-row flex-1 min-h-0">
         <div className="flex flex-col space-y-2 overflow-y-scroll flex-1 m-0">
           <div className="top-0 sticky bg-gray-50 p-6 m-0 w-full space-y-2 z-2">
-            <p className="w-max font-bold">Buscar Página</p>
+            <p className="w-max font-bold">Buscar Categoría</p>
             <Select value={sectionCategory} onValueChange={setSectionCategory}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Selecciona una categoría" />
@@ -112,11 +104,11 @@ export default function SectionsPage() {
             </Select>
           </div>
           <div className="flex flex-col gap-4 p-6">
-            {visibleSections.map((sections) => (
+            {visibleImages.map((image) => (
               <>
-                <SectionRow
-                  key={sections.id}
-                  section={sections}
+                <ImageRow
+                  key={image.id}
+                  image={image}
                   onUpdate={handleUpdate}
                 />
               </>

@@ -2,30 +2,27 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/api";
 import { toast } from "sonner";
 import axios from "axios";
-import type { PageSection } from "./useSections";
+import type { WebsiteImage } from "./useImages";
 
-export const useUpdateSections = () => {
+export const useUpdateImages = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: PageSection[]) => {
+    mutationFn: async (data: WebsiteImage[]) => {
       const formData = new FormData();
       data.forEach((item, index) => {
-        formData.append(`sections[${index}][id]`, item.id);
-        formData.append(`sections[${index}][title]`, item.title);
-        formData.append(`sections[${index}][description]`, item.description);
-        formData.append(`sections[${index}][button_text]`, item.button_text);
-        formData.append(`sections[${index}][button_url]`, item.button_url);
-        formData.append(`sections[${index}][page_key]`, item.page_key);
-
+        formData.append(`website_images[${index}][id]`, item.id);
+        formData.append(`website_images[${index}][image_key]`, item.image_key);
+        formData.append(
+          `website_images[${index}][section_category]`,
+          item.section_category
+        );
         if (item.image instanceof File)
-          formData.append(`sections[${index}][image]`, item.image);
+          formData.append(`website_images[${index}][image]`, item.image);
       });
       formData.append("_method", "PUT");
-      for (const [key, value] of formData.entries()) {
-        console.log("FD:", key, value, value instanceof File);
-      }
-      const response = await api.post(`sections`, formData);
+      
+      const response = await api.post(`images`, formData);
       return response.data;
     },
     onSuccess: (data) => {

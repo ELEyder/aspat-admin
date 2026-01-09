@@ -12,7 +12,8 @@ export interface PageSection {
   description: string;
   button_text: string;
   button_url: string;
-  image_url: string;
+  image_url: string | null;
+  image?: File;
   order: number;
 }
 
