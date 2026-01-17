@@ -12,15 +12,11 @@ import {
   Images,
   Inbox,
   Languages,
-  Lock,
   LogOut,
   Palette,
-  Ruler,
-  Settings,
   SquareCode,
   Star,
   StoreIcon,
-  User,
   User2,
 } from "lucide-react";
 
@@ -73,7 +69,11 @@ export function AppSidebar() {
       url: "/events",
       icon: Calendar,
     },
-
+    {
+      title: "Cursos",
+      url: "/courses",
+      icon: Book,
+    },
     {
       title: "Sitio web",
       icon: SquareCode,
@@ -94,16 +94,6 @@ export function AppSidebar() {
       ],
     },
 
-    {
-      title: "Configuración",
-      icon: Settings,
-      children: [
-        { title: "Cursos", url: "/config/courses", icon: Book },
-        { title: "Usuarios", url: "/config/usuarios", icon: User },
-        { title: "Roles", url: "/config/roles", icon: Ruler },
-        { title: "Permisos", url: "/config/permisos", icon: Lock },
-      ],
-    },
     {
       title: "Valoraciones",
       url: "/survey",

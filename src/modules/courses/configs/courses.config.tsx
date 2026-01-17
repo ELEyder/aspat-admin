@@ -82,7 +82,7 @@ export const columns: ColumnDef<Course>[] = [
 
             <DropdownMenuContent align="end" className="w-40">
               <DropdownMenuItem
-                onClick={() => navigate("/config/courses/" + request.id)}
+                onClick={() => navigate("/courses/" + request.id)}
               >
                 <Pencil className="h-4 w-4" /> Editar
               </DropdownMenuItem>

@@ -113,13 +113,11 @@ export default function SectionsPage() {
           </div>
           <div className="flex flex-col gap-4 p-6">
             {visibleSections.map((sections) => (
-              <>
                 <SectionRow
                   key={sections.id}
                   section={sections}
                   onUpdate={handleUpdate}
                 />
-              </>
             ))}
           </div>
         </div>

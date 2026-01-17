@@ -1,7 +1,10 @@
 import { useSortable } from "@dnd-kit/sortable";
+import type { Course } from "../../types/Course";
 import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@/components/ui/button";
 import { ChevronsUpDownIcon, Edit, MoreVertical, Trash } from "lucide-react";
+import ModuleDeleteModal from "../module-delete-modal";
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,27 +12,24 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
-import type { CourseContent } from "../../course-contents/types/CourseContent";
-import CourseContentDeleteModal from "./course-content-delete-modal";
-import { useDeleteCourseContent } from "../hooks/useDeleteCourseContent";
-import { useState } from "react";
 
-interface CourseContentCard {
-  content: CourseContent;
+interface SortableModuleProps {
+  module: Course["modules"][0];
   index: number;
-  setContents: React.Dispatch<React.SetStateAction<any>>;
+  deleteModule: any;
+  setCourse: React.Dispatch<React.SetStateAction<Course|null>>;
 }
 
-export function CourseContentCard({
-  content,
+export function CourseModuleCard({
+  module,
   index,
-  setContents,
-}: CourseContentCard) {
+  deleteModule,
+  setCourse,
+}: SortableModuleProps) {
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const deleteContent = useDeleteCourseContent();
-  const [openDelete, setOpenDelete] = useState(false);
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: content.id });
+    useSortable({ id: module.id });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -51,9 +51,8 @@ export function CourseContentCard({
         </div>
         <div>
           <p className="font-medium text-gray-800">
-            {content.translations[0].title}
+            {module.translations[0].title}
           </p>
-          <p>Tipo: {content.type}</p>
         </div>
       </div>
       <div className="flex gap-2">
@@ -64,13 +63,11 @@ export function CourseContentCard({
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
-            <DropdownMenuItem
-              onClick={() => navigate(`/config/course-contents/${content.id}`)}
-            >
+            <DropdownMenuItem onClick={()=> navigate(`/course-modules/${module.id}`)}>
               <Edit /> Editar
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => setOpenDelete(true)}
+              onClick={() => setOpen(true)}
               className="bg-red-50 focus:text-red-600 text-red-600"
             >
               <Trash className="text-red-600" /> Eliminar
@@ -78,12 +75,12 @@ export function CourseContentCard({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <CourseContentDeleteModal
-        deleteContent={deleteContent}
-        content={content}
-        open={openDelete}
-        setOpen={setOpenDelete}
-        setContents={setContents}
+      <ModuleDeleteModal
+        open={open}
+        setOpen={setOpen}
+        deleteModule={deleteModule}
+        module={module}
+        setCourse={setCourse}
       />
     </li>
   );

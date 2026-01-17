@@ -60,7 +60,7 @@ export function SectionRow({ section, onUpdate }: SectionRowProps) {
       <div data-color-mode="light" className="p-4 space-y-2">
         <p className="w-max font-bold">Título</p>
         <Input
-          value={section.title}
+          value={section.title ?? ""}
           onChange={(e: any) => handleOnChange(e.target.value, "title")}
         />
       </div>
@@ -74,7 +74,7 @@ export function SectionRow({ section, onUpdate }: SectionRowProps) {
       <div data-color-mode="light" className="p-4 space-y-2">
         <p className="w-max font-bold">Texto del botón</p>
         <Input
-          value={section.button_text}
+          value={section.button_text ?? ""}
           onChange={(e: any) => handleOnChange(e.target.value, "button_text")}
         />
       </div>
@@ -87,7 +87,7 @@ export function SectionRow({ section, onUpdate }: SectionRowProps) {
         </p>
         <Input
           placeholder="https://aspatperu.org.pe/(colocar esta ruta)"
-          value={section.button_url}
+          value={section.button_url ?? ""}
           onChange={(e: any) => handleOnChange(e.target.value, "button_url")}
         />
       </div>

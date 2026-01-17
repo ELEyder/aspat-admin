@@ -1,11 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Loader2,
-  CassetteTape,
-  Eye,
-  Languages,
-} from "lucide-react";
+import { Loader2, CassetteTape, Eye, Languages } from "lucide-react";
 import Loading from "@/components/loading";
 import { useImages, type WebsiteImage } from "../hooks/useImages";
 import {
@@ -48,7 +43,6 @@ export default function ImagesPage() {
     setLanguageLocal((prev) => (prev === "es" ? "en" : "es"));
   };
 
-
   if (!images) {
     return <Loading />;
   }
@@ -67,11 +61,7 @@ export default function ImagesPage() {
   return (
     <div className="flex flex-col h-dvh">
       <div className="sticky top-0 p-6 flex space-x-4 z-10 w-full bg-gray-100">
-        <Button
-          className="flex-1"
-          disabled={isPending}
-          onClick={handleClick}
-        >
+        <Button className="flex-1" disabled={isPending} onClick={handleClick}>
           {isPending ? <Loader2 className="animate-spin" /> : <CassetteTape />}{" "}
           Actualizar secciones
         </Button>
@@ -105,13 +95,7 @@ export default function ImagesPage() {
           </div>
           <div className="flex flex-col gap-4 p-6">
             {visibleImages.map((image) => (
-              <>
-                <ImageRow
-                  key={image.id}
-                  image={image}
-                  onUpdate={handleUpdate}
-                />
-              </>
+              <ImageRow key={image.id} image={image} onUpdate={handleUpdate} />
             ))}
           </div>
         </div>

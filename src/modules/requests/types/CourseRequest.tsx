@@ -1,6 +1,6 @@
 import type { User } from "@/types/User";
 import type { Status } from "./Status";
-import type { Course } from "@/modules/config/courses/types/Course";
+import type { Course } from "@/modules/courses/types/Course";
 
 export interface CourseRequest {
   id: string;

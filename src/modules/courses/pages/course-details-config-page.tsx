@@ -9,7 +9,7 @@ import CourseCard from "../components/course-card/course-card";
 import CourseModules from "../components/course-card/course-modules";
 import { useUpdateCourse } from "../hooks/useUpdateCourse";
 import { useUpdateCourseModulesOrder } from "../hooks/useUpdateCourseModulesOrder";
-import { useCourseDetails } from "@/modules/config/courses/hooks/useCourseDetails";
+import { useCourseDetails } from "@/modules/courses/hooks/useCourseDetails";
 
 const CourseDetailsConfigPage: FC = () => {
   const { id } = useParams();

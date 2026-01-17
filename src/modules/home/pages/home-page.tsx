@@ -65,7 +65,7 @@ const HomePage: FC = () => {
             "from-orange-400 to-amber-500",
           ];
           const bgGradient = colors[index % colors.length];
-          const links = ["/config/users", "/config/courses", "/stats", "/settings"];
+          const links = ["/users", "/courses", "/stats", "/settings"];
           return (
             <motion.div key={index} whileHover={{ scale: 1.05 }}>
               <Card className="cursor-pointer rounded-2xl shadow-lg hover:shadow-2xl transition-all bg-white/90 backdrop-blur-md border border-gray-100" onClick={() => navigate(links[index])}>
