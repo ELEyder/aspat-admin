@@ -15,8 +15,8 @@ import type { CourseContent } from "../../course-contents/types/CourseContent";
 
 interface RenderContentProps {
   content: CourseContent;
-  openPoints: boolean;
-  setOpenPoints: React.Dispatch<React.SetStateAction<boolean>>;
+  openGrade: boolean;
+  setOpenGrade: React.Dispatch<React.SetStateAction<boolean>>;
   onFileUpload?: (file: File) => Promise<void>;
 }
 

@@ -16,7 +16,7 @@ const CourseContentCard: FC<CourseContentCardProps> = ({
   content,
   onChangeContent,
 }) => {
-  const [openPoints, setOpenPoints] = useState(false);
+  const [openGrade, setOpenGrade] = useState(false);
 
   useEffect(() => {
     if ((content.type !== "pdf" && content.type !== "ppt") || !content.url)
@@ -44,7 +44,7 @@ const CourseContentCard: FC<CourseContentCardProps> = ({
                   ? toast.warning(
                       "No se encontraron calificaciones disponibles"
                     )
-                  : setOpenPoints(true)
+                  : setOpenGrade(true)
               }
             >
               Ver calificaciones
@@ -65,8 +65,8 @@ const CourseContentCard: FC<CourseContentCardProps> = ({
       <div className="mt-4">
         <RenderContent
           content={content}
-          openPoints={openPoints}
-          setOpenPoints={setOpenPoints}
+          openGrade={openGrade}
+          setOpenGrade={setOpenGrade}
         />
       </div>
     </div>
