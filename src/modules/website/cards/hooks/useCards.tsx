@@ -1,20 +1,22 @@
 import api from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 
-export interface Color {
+export interface Card {
   id: string;
-  key: string;
-  value: string;
+  section_key: string;
   title: string;
   description: string;
+  locale: string;
+  image: File | null;
+  image_url: string;
 }
 
-export function useColors() {
+export function useCards() {
 
   const query = useQuery({
-    queryKey: ["colors"],
+    queryKey: ["cards"],
     queryFn: async () => {
-      const { data } = await api.get<Color[]>(`/colors`);
+      const { data } = await api.get<Card[]>(`/cards`);
       return data;
     }
   });

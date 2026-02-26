@@ -4,50 +4,53 @@ import { Suspense, lazy } from "react";
 import { PrivateRoute } from "@/components/private-route";
 import LoadingPage from "@/pages/loading-page";
 import Layout from "@/layouts/layout";
+import SurveysPage from "@/modules/survey/pages/surveys-page";
+import CourseRatingsPage from "@/modules/courses/pages/course-ratings-page";
 
 const HomePage = lazy(() => import("@/modules/home/pages/home-page"));
 const EventsPage = lazy(() => import("@/modules/events/pages/events-page"));
 const EventPage = lazy(() => import("@/modules/events/pages/event-page"));
 const DonationRequestsPage = lazy(
-  () => import("@/modules/donations/pages/donation-page")
+  () => import("@/modules/donations/pages/donation-page"),
 );
 const ServiceRequestsPage = lazy(
-  () => import("@/modules/requests/pages/service-requests-page")
+  () => import("@/modules/requests/pages/service-requests-page"),
 );
 const CourseRequestsPage = lazy(
-  () => import("@/modules/requests/pages/course-requests-page")
+  () => import("@/modules/requests/pages/course-requests-page"),
 );
 const ContributorRequestsPage = lazy(
-  () => import("@/modules/requests/pages/contributor-requests-page")
+  () => import("@/modules/requests/pages/contributor-requests-page"),
 );
 const SurveyResponsesPage = lazy(
-  () => import("@/modules/survey/pages/survey-response-page")
+  () => import("@/modules/survey/pages/survey-response-page"),
 );
 const ColorsPage = lazy(
-  () => import("@/modules/website/colors/pages/colors-page")
+  () => import("@/modules/website/colors/pages/colors-page"),
 );
 const ContentsPage = lazy(
-  () => import("@/modules/website/contents/pages/contents-page")
+  () => import("@/modules/website/contents/pages/contents-page"),
 );
 const ImagesPage = lazy(
-  () => import("@/modules/website/images/pages/images-page")
+  () => import("@/modules/website/images/pages/images-page"),
+);
+const CardsPage = lazy(
+  () => import("@/modules/website/cards/pages/cards-page"),
 );
 const SectionsPage = lazy(
-  () => import("@/modules/website/sections/pages/sections-page")
+  () => import("@/modules/website/sections/pages/sections-page"),
 );
 const CoursesConfigPage = lazy(
-  () => import("@/modules/courses/pages/courses-config-page")
+  () => import("@/modules/courses/pages/courses-config-page"),
 );
 const CourseDetailsConfigPage = lazy(
-  () => import("@/modules/courses/pages/course-details-config-page")
+  () => import("@/modules/courses/pages/course-details-config-page"),
 );
 const ModulesConfigPage = lazy(
-  () =>
-    import("@/modules/course-modules/pages/course-module-config-page")
+  () => import("@/modules/course-modules/pages/course-module-config-page"),
 );
 const ContentConfigPage = lazy(
-  () =>
-    import("@/modules/course-contents/pages/course-content-config-page")
+  () => import("@/modules/course-contents/pages/course-content-config-page"),
 );
 
 const AppRoutes: FC = () => {
@@ -73,6 +76,7 @@ const AppRoutes: FC = () => {
           <Route path="/website/contents" element={<ContentsPage />} />
           <Route path="/website/sections" element={<SectionsPage />} />
           <Route path="/website/images" element={<ImagesPage />} />
+          <Route path="/website/cards" element={<CardsPage />} />
 
           <Route path="/requests/services" element={<ServiceRequestsPage />} />
           <Route path="/requests/courses" element={<CourseRequestsPage />} />
@@ -82,19 +86,12 @@ const AppRoutes: FC = () => {
           />
 
           <Route path="/courses" element={<CoursesConfigPage />} />
-          <Route
-            path="/courses/:id"
-            element={<CourseDetailsConfigPage />}
-          />
-          <Route
-            path="/course-modules/:id"
-            element={<ModulesConfigPage />}
-          />
-          <Route
-            path="/course-contents/:id"
-            element={<ContentConfigPage />}
-          />
-          <Route path="/survey" element={<SurveyResponsesPage />} />
+          <Route path="/courses/:id" element={<CourseDetailsConfigPage />} />
+          <Route path="/courses/:id/ratings" element={<CourseRatingsPage />} />
+          <Route path="/course-modules/:id" element={<ModulesConfigPage />} />
+          <Route path="/course-contents/:id" element={<ContentConfigPage />} />
+          <Route path="/survey" element={<SurveysPage />} />
+          <Route path="/survey/:id" element={<SurveyResponsesPage />} />
 
           <Route path="*" element={<HomePage />} />
         </Route>

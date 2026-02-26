@@ -15,7 +15,6 @@ import {
   LogOut,
   Palette,
   SquareCode,
-  Star,
   StoreIcon,
   User2,
 } from "lucide-react";
@@ -82,6 +81,7 @@ export function AppSidebar() {
         { title: "Contenidos", url: "/website/contents", icon: Languages },
         { title: "Secciones", url: "/website/sections", icon: AppWindow },
         { title: "Imágenes", url: "/website/images", icon: Images },
+        { title: "Tarjetas", url: "/website/cards", icon: IdCard },
       ],
     },
     {
@@ -94,11 +94,11 @@ export function AppSidebar() {
       ],
     },
 
-    {
-      title: "Valoraciones",
-      url: "/survey",
-      icon: Star,
-    },
+    // {
+    //   title: "Encuestas",
+    //   url: "/  ",
+    //   icon: Star,
+    // },
     {
       title: "Cerrar Sesión",
       onClick: () => setOpen(true),

@@ -18,7 +18,6 @@ const ResetButton: FC<ResetButtonProps> = ({
   return (
     <>
       <Button
-        className="flex-1"
         variant={"destructive"}
         disabled={disabled}
         onClick={() => setOpen(true)}

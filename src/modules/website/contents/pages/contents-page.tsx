@@ -76,9 +76,8 @@ export default function ContentsPage() {
 
   return (
     <div className="flex flex-col h-dvh">
-      <div className="sticky top-0 p-6 flex space-x-4 z-10 w-full bg-gray-100">
+      <div className="sticky top-0 p-6 flex space-x-4 z-10 w-full bg-gray-100 justify-end">
         <Button
-          className="flex-1"
           disabled={isPending || isResetting}
           onClick={handleClick}
         >
@@ -86,7 +85,6 @@ export default function ContentsPage() {
           Actualizar contenido
         </Button>
         <Button
-          className="flex-1"
           variant={"outline"}
           disabled={isResetting || isPending}
           onClick={handleClickLanguage}

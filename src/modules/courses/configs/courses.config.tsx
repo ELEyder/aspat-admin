@@ -8,6 +8,7 @@ import {
   CheckCircle,
   XCircle,
   MoreVertical,
+  Star,
 } from "lucide-react";
 import type { Course } from "../types/Course";
 import { useNavigate } from "react-router-dom";
@@ -85,6 +86,12 @@ export const columns: ColumnDef<Course>[] = [
                 onClick={() => navigate("/courses/" + request.id)}
               >
                 <Pencil className="h-4 w-4" /> Editar
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={() => navigate("/courses/" + request.id + "/ratings")}
+              >
+                <Star className="h-4 w-4" /> Ver valoraciones
               </DropdownMenuItem>
 
               <DropdownMenuItem onClick={() => setOpenDuplicate(true)}>

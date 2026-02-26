@@ -1,11 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Loader2,
-  CassetteTape,
-  Eye,
-  Languages,
-} from "lucide-react";
+import { Loader2, CassetteTape, Eye, Languages, Plus } from "lucide-react";
 import Loading from "@/components/loading";
 import { useSections, type PageSection } from "../hooks/useSections";
 import {
@@ -19,10 +14,12 @@ import ResetButton from "../../images/components/ResetButton";
 import { SectionRow } from "../components/SectionRow";
 import { useUpdateSections } from "../hooks/useUpdateSections";
 import { useResetSections } from "../hooks/useResetSections";
+import { useCreateSection } from "../hooks/useCreateSection";
 
 export default function SectionsPage() {
   const { data } = useSections();
   const [languageLocal, setLanguageLocal] = useState("es");
+  const mutateCreate = useCreateSection();
   const { mutateAsync: updateContents, isPending } = useUpdateSections();
   const { mutateAsync: resetSections, isPending: isResetting } =
     useResetSections();
@@ -61,7 +58,7 @@ export default function SectionsPage() {
   }
 
   const categories = Array.from(
-    new Set(sections.map((c) => c.page_key).filter(Boolean))
+    new Set(sections.map((c) => c.page_key).filter(Boolean)),
   );
 
   const visibleSections = sections.filter((c) => {
@@ -91,33 +88,46 @@ export default function SectionsPage() {
           {isResetting ? <Loader2 className="animate-spin" /> : <Languages />}
           Cambiar idioma ({languageLocal.toUpperCase()})
         </Button>
-        <ResetButton disabled={isResetting || isPending} onClick={handleClickReset} isResetting={isResetting} />
+        <ResetButton
+          disabled={isResetting || isPending}
+          onClick={handleClickReset}
+          isResetting={isResetting}
+        />
       </div>
       <div className="flex space-x-4 space-y-4 flex-row flex-1 min-h-0">
         <div className="flex flex-col space-y-2 overflow-y-scroll flex-1 m-0">
-          <div className="top-0 sticky bg-gray-50 p-6 m-0 w-full space-y-2 z-2">
-            <p className="w-max font-bold">Buscar Página</p>
-            <Select value={sectionCategory} onValueChange={setSectionCategory}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Selecciona una categoría" />
-              </SelectTrigger>
+          <div className="top-0 sticky bg-gray-50 p-6 m-0 w-full space-y-2 z-2 flex items-center gap-4">
+            <div className="w-full">
+              <Select
+                value={sectionCategory}
+                onValueChange={setSectionCategory}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Selecciona una categoría" />
+                </SelectTrigger>
 
-              <SelectContent>
-                {categories.map((cat) => (
-                  <SelectItem key={cat} value={cat}>
-                    {cat}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                <SelectContent>
+                  {categories.map((cat) => (
+                    <SelectItem key={cat} value={cat}>
+                      {cat}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Button disabled={sectionCategory === "" || mutateCreate.isPending} onClick={() => mutateCreate.mutateAsync({pageKey: sectionCategory, sectionIndex: visibleSections.length})}>
+                <Plus /> Añadir sección
+              </Button>
+            </div>
           </div>
           <div className="flex flex-col gap-4 p-6">
             {visibleSections.map((sections) => (
-                <SectionRow
-                  key={sections.id}
-                  section={sections}
-                  onUpdate={handleUpdate}
-                />
+              <SectionRow
+                key={sections.id}
+                section={sections}
+                onUpdate={handleUpdate}
+              />
             ))}
           </div>
         </div>

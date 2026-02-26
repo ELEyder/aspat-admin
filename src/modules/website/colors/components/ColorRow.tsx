@@ -8,24 +8,33 @@ interface ColorRowProps {
   onUpdate: (id: string, newValue: string) => void;
 }
 
-export function ColorRow({ color, onUpdate, defaultColor = "" } : ColorRowProps) {
+export function ColorRow({
+  color,
+  onUpdate,
+  defaultColor = "",
+}: ColorRowProps) {
   const [localValue, setLocalValue] = useState(color.value);
 
   return (
-    <div className="flex space-x-4 items-center">
-      <div
-        className="w-16 h-16 rounded border"
-        style={{ backgroundColor: defaultColor }}
-      ></div>
-      <ArrowRight className="self-center" />
-      <input
-        type="color"
-        className="w-16 h-16 rounded"
-        value={localValue}
-        onChange={(e) => setLocalValue(e.target.value)}
-        onBlur={() => onUpdate(color.id, localValue)}
-      />
-      <p className="w-max">{color.key}</p>
+    <div className="flex gap-4 sm:items-center p-6 flex-col-reverse sm:flex-row">
+      <div className="flex space-x-4">
+        <div
+          className="w-16 h-16 rounded border"
+          style={{ backgroundColor: defaultColor }}
+        ></div>
+        <ArrowRight className="self-center" />
+        <input
+          type="color"
+          className="w-16 h-16 rounded"
+          value={localValue}
+          onChange={(e) => setLocalValue(e.target.value)}
+          onBlur={() => onUpdate(color.id, localValue)}
+        />
+      </div>
+      <div>
+        <p className="w-max text-xl font-bold">{color.title}</p>
+        <p className="w-max">{color.description}</p>
+      </div>
     </div>
   );
 }
