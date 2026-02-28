@@ -7,6 +7,8 @@ import {
   CassetteTape,
   Eye,
   Languages,
+  Settings,
+  TimerReset,
 } from "lucide-react";
 import { useResetContents } from "../hooks/useResetContents";
 import Loading from "@/components/loading";
@@ -18,7 +20,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import ResetButton from "../components/ResetButton";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function ContentsPage() {
   const { data } = useContents();
@@ -40,7 +46,7 @@ export default function ContentsPage() {
       if (!prev) return prev;
 
       return prev.map((c) =>
-        c.id === id ? { ...c, content_value: newValue } : c
+        c.id === id ? { ...c, content_value: newValue } : c,
       );
     });
   };
@@ -64,7 +70,7 @@ export default function ContentsPage() {
   }
 
   const categories = Array.from(
-    new Set(contents.map((c) => c.section_category).filter(Boolean))
+    new Set(contents.map((c) => c.section_category).filter(Boolean)),
   );
 
   const visibleContents = contents.filter((c) => {
@@ -76,27 +82,89 @@ export default function ContentsPage() {
 
   return (
     <div className="flex flex-col h-dvh">
-      <div className="sticky top-0 p-6 flex space-x-4 z-10 w-full bg-gray-100 justify-end">
-        <Button
-          disabled={isPending || isResetting}
-          onClick={handleClick}
-        >
-          {isPending ? <Loader2 className="animate-spin" /> : <CassetteTape />}{" "}
-          Actualizar contenido
-        </Button>
-        <Button
-          variant={"outline"}
-          disabled={isResetting || isPending}
-          onClick={handleClickLanguage}
-        >
-          {isResetting ? <Loader2 className="animate-spin" /> : <Languages />}
-          Cambiar idioma ({languageLocal.toUpperCase()})
-        </Button>
-        <ResetButton disabled={isResetting || isPending} onClick={handleClickReset} isResetting={isResetting} />
+      <div className="sticky top-0 p-6 flex z-10 w-full bg-neutral-900 justify-between flex-col xl:flex-row gap-4">
+        <div className="flex items-center space-x-4 ">
+          <Settings className="animate-spin [animation-duration:20s]" />{" "}
+          <h1 className=" text-2xl font-bold"> Configuración de contenido</h1>
+        </div>
+        <div className="flex space-x-4 justify-end">
+          <Tooltip>
+            <TooltipTrigger asChild className="xl:hidden block">
+              <a
+                href={
+                  import.meta.env.PROD
+                    ? "https://aspatperu.org.pe"
+                    : "http://localhost:5173"
+                }
+                target="_blank"
+              >
+                <Button className="flex-1" variant={"outline"}>
+                  <Eye /> <p className="hidden sm:block">Vista Previa</p>
+                </Button>
+              </a>
+            </TooltipTrigger>
+            <TooltipContent className="sm:hidden block">
+              <p>Vista Previa</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant={"destructive"}
+                disabled={isResetting || isPending}
+                onClick={handleClickReset}
+              >
+                {isResetting ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <TimerReset />
+                )}
+                <p className="hidden sm:block">Reiniciar contenido</p>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent className="sm:hidden block">
+              <p>Reiniciar contenido</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant={"outline"}
+                disabled={isResetting || isPending}
+                onClick={handleClickLanguage}
+              >
+                {isResetting ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <Languages />
+                )}
+                <p className="hidden sm:block">Cambiar idioma ({languageLocal.toUpperCase()})</p>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent className="sm:hidden block">
+              <p>Cambiar idioma ({languageLocal.toUpperCase()})</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button disabled={isPending || isResetting} onClick={handleClick}>
+                {isPending ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <CassetteTape />
+                )}
+                <p className="hidden sm:block">Actualizar Colores</p>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent className="sm:hidden block">
+              <p>Actualizar colores</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </div>
       <div className="flex space-x-4 space-y-4 flex-row flex-1 min-h-0">
         <div className="flex flex-col space-y-2 overflow-y-scroll flex-1 m-0">
-          <div className="top-0 sticky bg-gray-50 p-6 m-0 w-full space-y-2 z-2">
+          <div className="top-0 sticky bg-neutral-950 p-6 m-0 w-full space-y-2 z-2">
             <p className="w-max font-bold">Buscar Contenido</p>
             <Select value={sectionCategory} onValueChange={setSectionCategory}>
               <SelectTrigger>
@@ -113,14 +181,13 @@ export default function ContentsPage() {
             </Select>
           </div>
           <div className="flex flex-col gap-4 p-6">
-
-          {visibleContents.map((content) => (
-            <ContentRow
-              key={content.id}
-              content={content}
-              onUpdate={handleUpdate}
-            />
-          ))}
+            {visibleContents.map((content) => (
+              <ContentRow
+                key={content.id}
+                content={content}
+                onUpdate={handleUpdate}
+              />
+            ))}
           </div>
         </div>
         <div className="w-full flex-col space-y-4 flex-1 hidden xl:flex">
@@ -134,19 +201,7 @@ export default function ContentsPage() {
             className="h-full"
           />
         </div>
-        <div className="w-full items-center justify-center flex-1 xl:hidden flex">
-          <a
-            href={
-              import.meta.env.PROD
-                ? "https://aspatperu.org.pe"
-                : "http://localhost:5173"
-            }
-            target="_blank"
-            className="flex underline decoration-3"
-          >
-            <Eye className="mr-2" /> Vista previa
-          </a>
-        </div>
+        
       </div>
     </div>
   );

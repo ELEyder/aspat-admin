@@ -40,7 +40,7 @@ export function CourseModuleCard({
       ref={setNodeRef}
       style={style}
       {...attributes}
-      className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100 hover:bg-gray-100 transition-colors gap-4"
+      className="flex items-center justify-between p-4 rounded-lg border  hover:bg-black transition-colors gap-4 cursor-pointer"
     >
       <Button className="cursor-ns-resize" variant={"outline"} {...listeners}>
         <ChevronsUpDownIcon />
@@ -50,7 +50,7 @@ export function CourseModuleCard({
           {index + 1}
         </div>
         <div>
-          <p className="font-medium text-gray-800">
+          <p className="font-medium text-gray-200">
             {module.translations[0].title}
           </p>
         </div>
@@ -68,9 +68,9 @@ export function CourseModuleCard({
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => setOpen(true)}
-              className="bg-red-50 focus:text-red-600 text-red-600"
+              className="hover:bg-red-950! text-red-600"
             >
-              <Trash className="text-red-600" /> Eliminar
+              <Trash /> Eliminar
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

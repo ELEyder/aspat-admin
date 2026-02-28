@@ -127,7 +127,7 @@ export const CourseModuleForm = forwardRef(function CourseForm(
             <FormItem>
               <FormLabel>Descripción</FormLabel>
               <FormControl>
-                <div data-color-mode="light">
+                <div data-color-mode="dark">
                   <MDEditor
                     value={field.value}
                     onChange={field.onChange}

@@ -51,13 +51,13 @@ const CourseCard: FC<CourseCardProps> = ({
   };
 
   return (
-    <Card className="shadow-lg border border-gray-200 rounded-xl">
-      <CardHeader className="border-b bg-white rounded-t-xl">
-        <CardTitle className="text-lg font-semibold text-gray-800 flex gap-2">
+    <Card className="shadow-lg border border-gray-800 rounded-xl">
+      <CardHeader className="border-b rounded-t-xl">
+        <CardTitle className="text-lg font-semibold text-gray-200 flex gap-2">
           <ReceiptTextIcon /> Detalles del curso
         </CardTitle>
       </CardHeader>
-      <CardContent className="px-6 bg-white">
+      <CardContent className="px-6">
         <CourseForm
           ref={formRef}
           course={course}

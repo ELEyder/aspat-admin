@@ -46,7 +46,7 @@ const CoursesConfigPage = lazy(
 const CourseDetailsConfigPage = lazy(
   () => import("@/modules/courses/pages/course-details-config-page"),
 );
-const ModulesConfigPage = lazy(
+const CourseModuleConfigPage = lazy(
   () => import("@/modules/course-modules/pages/course-module-config-page"),
 );
 const ContentConfigPage = lazy(
@@ -88,7 +88,7 @@ const AppRoutes: FC = () => {
           <Route path="/courses" element={<CoursesConfigPage />} />
           <Route path="/courses/:id" element={<CourseDetailsConfigPage />} />
           <Route path="/courses/:id/ratings" element={<CourseRatingsPage />} />
-          <Route path="/course-modules/:id" element={<ModulesConfigPage />} />
+          <Route path="/course-modules/:id" element={<CourseModuleConfigPage />} />
           <Route path="/course-contents/:id" element={<ContentConfigPage />} />
           <Route path="/survey" element={<SurveysPage />} />
           <Route path="/survey/:id" element={<SurveyResponsesPage />} />

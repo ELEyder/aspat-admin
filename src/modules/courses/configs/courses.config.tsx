@@ -53,11 +53,11 @@ export const columns: ColumnDef<Course>[] = [
       return (
         <div className="space-y-1">
           {isActive ? (
-            <Badge className="bg-green-100 text-green-700 flex items-center gap-1">
+            <Badge className=" text-green-700 flex items-center gap-1">
               <CheckCircle /> Sí
             </Badge>
           ) : (
-            <Badge className="bg-gray-100 text-gray-600 flex items-center gap-1">
+            <Badge className=" text-gray-600 flex items-center gap-1">
               <XCircle /> No
             </Badge>
           )}
@@ -100,7 +100,7 @@ export const columns: ColumnDef<Course>[] = [
 
               <DropdownMenuItem
                 onClick={() => setOpenDelete(true)}
-                className="text-red-600 bg-red-50"
+                className="text-red-600 hover:bg-red-950!"
               >
                 <Trash2 className="h-4 w-4" /> Eliminar
               </DropdownMenuItem>

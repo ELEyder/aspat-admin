@@ -45,7 +45,7 @@ const CourseDetailsConfigPage: FC = () => {
 
   return (
     <div className="absolute w-full min-h-screen">
-      <div className="sticky w-full top-0 z-40 bg-gray-50/90 backdrop-blur-md border-b border-gray-200 px-6 py-2">
+      <div className="sticky w-full top-0 z-40 bg-black backdrop-blur-md border-b p-6">
         <div className="relative py-3 px-1 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Button variant="outline" onClick={() => window.history.back()}>
@@ -81,13 +81,13 @@ const CourseDetailsConfigPage: FC = () => {
             {updateCourse.isPending ? (
               <Loader2 className="animate-spin" />
             ) : (
-              <><CassetteTape className="h-4 w-4 mr-2" />Guardar Cambios </>
+              <><CassetteTape className="h-4 w-4" />Guardar Cambios </>
             )}
           </Button>
         </div>
       </div>
 
-      <div className="min-h-screen bg-linear-to-b from-gray-50 to-gray-100 p-6">
+      <div className="min-h-screen bg-linear-to-b from-black to-black p-6">
         <div className="max-w-5xl mx-auto flex flex-col gap-6 ">
           <div className="flex flex-col gap-6">
             <CourseCard

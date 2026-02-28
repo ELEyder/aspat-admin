@@ -102,8 +102,8 @@ const CourseModuleConfigPage: FC = () => {
   };
 
   return (
-    <div className="absolute w-full min-h-screen bg-gray-50">
-      <div className="sticky w-full top-0 z-40 bg-gray-50/90 backdrop-blur-md border-b border-gray-200 px-6 py-2">
+    <div className="absolute w-full min-h-screen bg-black">
+      <div className="sticky w-full top-0 z-40 bg-black backdrop-blur-md border-b p-6">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <Button variant="outline" onClick={() => window.history.back()}>
             <ArrowLeft /> Volver

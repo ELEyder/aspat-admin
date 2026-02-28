@@ -47,14 +47,14 @@ export default function ColorsPage() {
 
   return (
     <div className="flex flex-col h-dvh">
-      <div className="sticky top-0 p-6 flex z-10 w-full bg-gray-100 justify-between flex-col xl:flex-row gap-4">
+      <div className="sticky top-0 p-6 flex z-10 w-full bg-neutral-900 justify-between flex-col xl:flex-row gap-4">
         <div className="flex items-center space-x-4 ">
           <Settings className="animate-spin [animation-duration:20s]" />{" "}
           <h1 className=" text-2xl font-bold"> Configuración de colores</h1>
         </div>
         <div className="flex space-x-4 justify-end">
           <Tooltip>
-            <TooltipTrigger className="xl:hidden block">
+            <TooltipTrigger asChild className="xl:hidden block">
               <a
                 href={
                   import.meta.env.PROD
@@ -77,41 +77,39 @@ export default function ColorsPage() {
             </TooltipContent>
           </Tooltip>
           <Tooltip>
-            <TooltipTrigger>
-
-          <Button
-            variant={"destructive"}
-            disabled={isResetting || isPending}
-            onClick={handleClickReset}
-            >
-            {isResetting ? (
-              <Loader2 className="animate-spin" />
-            ) : (
-              <TimerReset />
-            )}
-            <p className="hidden sm:block">Reiniciar colores</p>
-          </Button>
+            <TooltipTrigger asChild>
+              <Button
+                variant={"destructive"}
+                disabled={isResetting || isPending}
+                onClick={handleClickReset}
+              >
+                {isResetting ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <TimerReset />
+                )}
+                <p className="hidden sm:block">Reiniciar colores</p>
+              </Button>
             </TooltipTrigger>
             <TooltipContent className="sm:hidden block">
               <p>Reiniciar colores</p>
             </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-            <TooltipTrigger>
-
-          <Button disabled={isPending || isResetting} onClick={handleClick}>
-            {isPending ? (
-              <Loader2 className="animate-spin" />
-            ) : (
-              <CassetteTape />
-            )}
-            <p className="hidden sm:block">Actualizar Colores</p>
-          </Button>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button disabled={isPending || isResetting} onClick={handleClick}>
+                {isPending ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <CassetteTape />
+                )}
+                <p className="hidden sm:block">Actualizar Colores</p>
+              </Button>
             </TooltipTrigger>
             <TooltipContent className="sm:hidden block">
               <p>Actualizar colores</p>
             </TooltipContent>
-            </Tooltip>
+          </Tooltip>
         </div>
       </div>
       <div className="flex space-x-4 space-y-4 flex-row flex-1 min-h-0">

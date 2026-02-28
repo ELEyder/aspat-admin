@@ -144,13 +144,13 @@ const CourseModules = forwardRef(function CourseModulesCard(
   }));
 
   return (
-    <Card className="shadow-lg border border-gray-200 rounded-xl">
-      <CardHeader className="border-b bg-white rounded-t-xl">
-        <CardTitle className="text-lg font-semibold text-gray-800">
+    <Card className="shadow-lg border border-gray-800 rounded-xl">
+      <CardHeader className="border-b rounded-t-xl">
+        <CardTitle className="text-lg font-semibold text-gray-200">
           Módulos del curso
         </CardTitle>
       </CardHeader>
-      <CardContent className="px-6 bg-white flex flex-col gap-4">
+      <CardContent className="px-6 flex flex-col gap-4">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}

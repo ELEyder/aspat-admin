@@ -3,3 +3,16 @@
 * {
   font-family: "Roboto", sans-serif;
 }
+
+body {
+  background-color: black;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background-color: rgb(29, 29, 29);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(29, 29, 29);
+}
